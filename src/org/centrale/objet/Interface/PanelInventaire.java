@@ -22,8 +22,9 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
     protected int invHeight = 3;
 
     // On définit les couleurs de l'arrière-plan et de la grille
-    public Color GRID_COLOR = Color.WHITE;
-    public Color BACKGROUND_COLOR = Color.lightGray;
+    public final Color GRID_COLOR = Color.WHITE;
+    public final Color BACKGROUND_COLOR = Color.lightGray;
+    public final Color TARGET_COLOR = Color.red;
 
 
     protected int sideLengthX, sideLengthY;
@@ -85,6 +86,7 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
 
             imagesDisponibles.put(name, new File(finalPath));
         }
+
     }
 
     /**
@@ -248,6 +250,8 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
 
             g2D.drawImage(imageDraw, coordonnees[0], coordonnees[1], coordonnees[2], coordonnees[3], null);
         }
+
+        this.placerSelection(g2D);
     }
 
     // Méthode qui gère les fonds d'écran
@@ -292,6 +296,27 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
             g.drawLine(currentX, 0, currentX, getHeight());
             currentX = currentX + this.sideLengthX;
         }
+    }
+
+    /**
+     * Place une "cible" aux coordonnées de la sélection faite par la souris
+     * Permet de repérer quelle case de l'inventaire est sélectionnée
+     * @param g
+     */
+    protected void placerSelection(Graphics2D g){
+
+        int coordX, coordY;
+
+        g.setColor(this.TARGET_COLOR);
+        g.setStroke(new BasicStroke((float) 1.5));
+
+        coordX = selectionX*sideLengthX;
+        coordY = selectionY*sideLengthY;
+
+        g.drawLine(coordX+2, coordY+2, coordX+sideLengthX-2, coordY+2);
+        g.drawLine(coordX+2, coordY+2, coordX+2, coordY+sideLengthY-2);
+        g.drawLine(coordX+sideLengthX-2, coordY+2, coordX+sideLengthX-2, coordY+sideLengthY-2);
+        g.drawLine(coordX+2, coordY+sideLengthY-2, coordX+sideLengthX-2, coordY+sideLengthY-2);
     }
 
     /**
