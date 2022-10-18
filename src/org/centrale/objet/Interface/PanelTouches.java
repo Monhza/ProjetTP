@@ -54,9 +54,9 @@ public class PanelTouches extends JPanel implements ActionListener {
             int y = this.fenetre.getAffichageJeu().selectionY;
             this.descriptionAction = new String[]{"attaque", x + "," + y};
         } else if (this.utiliserButton.equals(source)) {
-            int x = this.fenetre.getInventaireEcran().selectionX;
-            int y = this.fenetre.getInventaireEcran().selectionY;
-            this.descriptionAction = new String[]{"utiliser", x + "," + y};
+            String tag = this.fenetre.getInventaireEcran().getTagSelection();
+
+            this.descriptionAction = new String[]{"utiliser", tag};
         }
 
         if (this.descriptionAction != null){

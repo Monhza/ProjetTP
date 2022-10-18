@@ -1,14 +1,14 @@
 package org.centrale.objet.WoE;
 
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import  java.util.Scanner;
+import java.util.*;
+
 import  org.centrale.objet.Interface.*;
 
+import javax.print.attribute.standard.NumberOfInterveningJobs;
+
 /**
- * Classe permettant de gérer un joueur humain qui pourra
+ * Classe permettant de gérer un joueur humain qui pourra effectuer des actions pendant son tour
  */
 public class Joueur implements ElementGraphique, Combattant{
 
@@ -18,7 +18,7 @@ public class Joueur implements ElementGraphique, Combattant{
     public String nomPerso;
     public Personnage perso;
     public Point2D pos;
-    public List<Objet> inventaire;
+    public HashMap<String, Objet> inventaire;
     public World monde;
 
     public String idGraphique = "hero";
@@ -30,7 +30,7 @@ public class Joueur implements ElementGraphique, Combattant{
         this.touchesAction = monde.fenetreJeu.getTouchesAction();
         this.inventaireEcran = monde.fenetreJeu.getInventaireEcran();
 
-        inventaire = new LinkedList<>();
+        inventaire = new HashMap<>();
 
         String[] typesPossibles = {"Archer", "Guerrier"};
         this.choixPerso(typesPossibles);
@@ -145,13 +145,12 @@ public class Joueur implements ElementGraphique, Combattant{
                 return false;
 
             case "utiliser":
-                // On récupère la sélectionnée
-                String[] selection = descriptionAction[1].split(",");
+                // On récupère le tag de l'item sélectionné
+                String tagItem = descriptionAction[1];
 
-                int Xselection = Integer.parseInt(selection[0]);
-                int Yselection = Integer.parseInt(selection[1]);
+                // On l'utilise, la méthode renvoie true si l'exécution s'est bien déroulé
+                return utiliserDepuisInventaire(tagItem);
 
-                //Objet item = Positions.whatCreature(Xselection, Yselection);
 
 
             default :
@@ -244,15 +243,31 @@ public class Joueur implements ElementGraphique, Combattant{
     }
 
     public void ajoutInventaire(Objet item){
-        inventaire.add(item);
+        inventaire.put(item.tag, item);
 
         this.inventaireEcran.chargerElement(item.getImage(), item.tag);
     }
 
-    public void retirerInventaire(Objet item){
-        inventaire.remove(item);
+    public void retirerInventaire(String tag){
+        inventaire.remove(tag);
 
-        this.inventaireEcran.supprimerElement(item.tag);
+        this.inventaireEcran.supprimerElement(tag);
+    }
+
+    public boolean utiliserDepuisInventaire(String tag){
+
+        if (tag == null){
+            System.out.println("Il n'y a pas d'item sur la case sélectionnée");
+            return false;
+        }
+
+        Objet item = inventaire.get(tag);
+
+        item.utiliser(this);
+
+        this.retirerInventaire(tag);
+
+        return true;
     }
 
 

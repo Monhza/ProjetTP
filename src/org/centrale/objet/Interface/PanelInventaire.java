@@ -1,8 +1,6 @@
 package org.centrale.objet.Interface;
 
 import org.centrale.objet.WoE.Point2D;
-import org.centrale.objet.WoE.Positions;
-import org.centrale.objet.WoE.World;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -59,6 +57,10 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
 
         // On charge les chemins des images présents dans le fichier "graphismes"
         this.chargerCheminsImages();
+
+        // On détecte les mouvements et des clics de la souris sur le panel pour permettre de
+        // sélectionner une case
+        addMouseListener(this);
     }
 
     /**
@@ -120,6 +122,8 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
     public void mouseClicked(MouseEvent e) {
         selectionX = e.getX()/this.sideLengthX;
         selectionY = e.getY()/this.sideLengthY;
+
+        System.out.println(selectionX + "'" + selectionY);
     }
 
     @Override
@@ -331,6 +335,23 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
         }
 
         return matPresence;
+    }
+
+    public String getTagSelection(){
+        Point2D pointTemp;
+
+        String[] listeTags = this.positionElements.keySet().toArray(new String[0]);
+
+        for (String tag : listeTags){
+
+            pointTemp = this.positionElements.get(tag);
+
+            if (pointTemp.equals(new Point2D(selectionX, selectionY))){
+                return tag;
+            }
+        }
+
+        return null;
     }
 
 
