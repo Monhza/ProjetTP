@@ -29,7 +29,7 @@ public class FenetreJeu extends JFrame {
         this.touchesAction = new PanelTouches(this);
         panWidth = this.touchesAction.PANEL_WIDTH;
         panHeight = this.touchesAction.PANEL_HEIGHT;
-        this.touchesAction.setBounds(650,0,panWidth, panHeight);
+        this.touchesAction.setBounds(650,250,panWidth, panHeight);
         this.add(this.touchesAction);
 
 
@@ -37,7 +37,7 @@ public class FenetreJeu extends JFrame {
         this.inventaire = new PanelInventaire(tempsRefresh);
         panWidth = this.inventaire.PANEL_WIDTH;
         panHeight = this.inventaire.PANEL_HEIGHT;
-        this.inventaire.setBounds(650,250,panWidth, panHeight);
+        this.inventaire.setBounds(650,450,panWidth, panHeight);
         this.add(this.inventaire);
         //On démarre l'affichage dynamique du panel
         this.inventaire.demarrerAffichage();

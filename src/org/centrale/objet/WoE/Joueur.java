@@ -37,7 +37,7 @@ public class Joueur implements ElementGraphique, Combattant{
 
         switch (this.typePerso){
             case "Guerrier" :
-                this.perso = new Guerrier(this.monde, this.nomPerso, 100, 100, 20,
+                this.perso = new Guerrier(this.monde, this.nomPerso, 100, 5, 20,
                         100, 100, 100, pos);
                 break;
 
