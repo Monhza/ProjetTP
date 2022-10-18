@@ -1,0 +1,80 @@
+package org.centrale.objet.WoE;
+
+/**
+ * La classe PotionSoin permet de générer des potions qui restaurent les point de vie des protagonistes.
+ *
+ */
+
+public class PotionSoin extends Objet{
+
+    //Attributs
+    public int soin; //Le nombre de points de vie qui sont restaurés par la potion
+    public int quantite; //La quantité de potion que contient la fiole
+
+    public String idGraphique = "potion";
+
+    /**
+     * Constructeur avec paramètres
+     *
+     * @param  soin : Nombre de points de vie restaurés par la potion
+     * @param quantite : Nombre de potions
+     * @param p : Position de la position
+     */
+    public PotionSoin(World monde, int soin, int quantite, Point2D p) {
+        super(monde, p);
+        this.soin = soin;
+        this.quantite = quantite;
+    }
+
+    /**
+     * Contructeur sans paramètres
+     *
+     * @return Position du parit
+     */
+    public Point2D getPos() {
+        return pos;
+    }
+
+    //Methodes
+
+    /**
+     * Méthode qui permet d'utiliser une potion pour une creature
+     * @param c : Creature qui recevra les points de vie
+     */
+    public void boire_potion(Creature c){
+        if (this.quantite >= 1 && this.pos.equals(c.pos)){
+            this.quantite -= 1;
+
+            c.ptVie += this.soin;
+
+            System.out.println("La potion rend " + this.soin + " points de vie");
+        }
+        else{
+            System.out.println("La potion est vide");
+        }
+    }
+
+    public String getImage() {
+        return this.idGraphique;
+    }
+
+
+    /**
+     * défini le comportement de la potion s'il est utilisé par un joueur
+     * @param joueur
+     */
+    public void utiliser(Joueur joueur){
+        super.utiliser(joueur);
+        joueur.modifierPV(this.soin);
+    }
+
+    @Override
+    public void interagit(Joueur joueur){
+        // Invoquer le super permet de faire disparaitre l'élément de la carte (pas du jeu)
+        super.interagit(joueur);
+
+        joueur.ajoutInventaire(this);
+    }
+
+
+}
