@@ -3,6 +3,9 @@ package org.centrale.objet.WoE;
 import org.centrale.objet.Interface.FenetreJeu;
 import org.centrale.objet.Interface.PanelJeu;
 
+/**
+ * La
+ */
 public class Carte {
     public World monde;
     public PanelJeu affichageJeu;
@@ -60,5 +63,4 @@ public class Carte {
             i++;
         }
     }
-
 }

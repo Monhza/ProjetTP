@@ -15,13 +15,10 @@ import java.util.Random;
  * Elle contient une méthode qui permet de placer les personnages et les mobs sur un point
  * aléatoire sur la carte tout en s'assurant qu'aucun personnage ne se situera sur le même point
  *
- * @author Nicolas Thevenot
+ * @author Nicolas et Edwin
  * @version 1.0
  */
 public class World {
-
-    //Pour l'instant, on crée les personnages ici
-    //Plus tard, il faudra le faire à l'extérieur de la classe
 
     public List<Personnage> pers;
     public List<Monstre> bugs;
@@ -77,6 +74,8 @@ public class World {
      * @param nbLou
      */
     public void genererPop(int nbArc, int nbPay, int nbLap, int nbGue, int nbLou, int nbItem){
+
+        // On génère un nombre donné de points sur la carte
         ArrayList<Point2D> listePoints = Positions.genererPointsAlea(nbArc+nbPay+nbLap+nbGue+nbLou+nbItem+1
                 , tailleParDefaut, tailleParDefaut);
 
@@ -118,7 +117,8 @@ public class World {
     }
 
     /**
-     * Cette méthode nous permet de controler la création d'une créature
+     * Cette méthode nous permet de contrôler la création d'une créature
+     * On définit manuellement les statistiques des pnjs
      * @param type : type de la créature
      * @param pos : position de la créature
      */
@@ -160,6 +160,11 @@ public class World {
         Positions.crea.add(newPerso);
     }
 
+    /**
+     * Cette méthode est appelée pour créer un item aléatoirement
+     * parmi les items qu'il est possible de créer
+     * @param pos
+     */
     public void creerItem(Point2D pos){
         Random rand = new Random();
 
@@ -197,9 +202,10 @@ public class World {
     }
 
     /**
-     * Méthode qui permet au joueur de choisir entre se déplacer ou combattre
+     * Méthode appelée à chaque tour, c'est ici qu'on défini le séquencement d'un tour
      */
     public void tourDeJeu(){
+        // On appelle la méthode joueTour de tous les éléments présents sur la carte
         player.joueTour();
 
         // On crée une copie de la liste originelle à chaque fois pour éviter le
