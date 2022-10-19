@@ -63,6 +63,7 @@ public class FenetreJeu extends JFrame {
 
     /**
      * Méthode qui permet de générer le monde sur la carte
+     *
      */
     public void chargerElements(World monde){
 
