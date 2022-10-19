@@ -13,8 +13,6 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
     public int ptPar;
     public int pageAtt;
     public int pagePar;
-    public int ptDeg;
-    public Point2D pos;
     public World monde;
 
     public Random tirageAlea = new Random();
@@ -32,6 +30,7 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
      *
      */
     public Creature(World monde, int pV, int dA, int pPar, int paAtt, int paPar, Point2D p) {
+        super(p);
         this.monde = monde;
         this.ptVie = pV;
         this.degAtt = dA;
@@ -47,6 +46,7 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
      * @param c : Objet du type Creature qui sera copié
      */
     public Creature(Creature c){
+        super(c.pos);
         this.monde = c.monde;
         this.ptVie = c.ptVie;
         this.degAtt = c.degAtt;
@@ -60,7 +60,7 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
      * Constructeur sans paramètres
      */
     public Creature(){
-
+        super();
     }
 
     //Méthodes
@@ -93,12 +93,40 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
      * Par défault, à chaque tour, la créature se déplace sur une case aléatoirement
      */
     public void joueTour(){
-        this.deplace();
+
+        // On vérifie si le personnage est en vie
+        this.enVie();
+
+        // On fait un tirage pour déterminer le comportement du personnage pendant ce tour
+        int choix = tirageAlea.nextInt(5);
+
+        switch (choix) {
+            // Si le tirage tombe sur 0, le personnage se déplace
+            case 0:
+                this.deplace();
+        }
+    }
+
+    /**
+     * Méthode qui vérifie si le personnage est en vie
+     */
+    public void enVie(){
+        if (this.ptVie <=0){
+            this.mort();
+        }
+    }
+
+    /**
+     * Méthode appelée pour tuer le personnage et le supprimer de la carte
+     */
+    public void mort(){
+        this.monde.mort(this);
     }
 
 
     public void modifierPV(int deltaPV){
         this.ptVie += deltaPV;
+        System.out.println(this.getClass() + " Point de vie : " + this.ptVie);
     }
 
     public void modifierDegAtt(int modDegAtt){
@@ -117,8 +145,8 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
         this.pageAtt += modPagePar;
     }
 
-    public void setPtDeg(int ptDeg){
-        this.ptDeg = ptDeg;
+    public void setPtDeg(int degAtt){
+        this.degAtt = degAtt;
     }
 
 

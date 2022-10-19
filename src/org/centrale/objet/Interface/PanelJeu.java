@@ -208,14 +208,24 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
 
         if (heightImage > widthImage){
             height = this.sideLengthY - 1;
+            try {
             y = pointTemp.getY() * this.sideLengthY + 1;
+            }catch (NullPointerException e){
+                System.out.println("test");
+                y =0;
+            }
 
             facteur = widthImage/heightImage;
             width = this.sideLengthX*facteur - 1;
             x = (pointTemp.getX() + (1-facteur)/2) * this.sideLengthX + 1;
         } else {
             width = this.sideLengthX - 1;
-            x = pointTemp.getX() * sideLengthX + 1;
+            try {
+                x = pointTemp.getX() * sideLengthX + 1;
+            }catch (NullPointerException e){
+                System.out.println("test");
+                x =0;
+            }
 
             facteur = heightImage/widthImage;
             height = this.sideLengthY*facteur - 1;

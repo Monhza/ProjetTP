@@ -37,13 +37,13 @@ public class Joueur implements ElementGraphique, Combattant{
 
         switch (this.typePerso){
             case "Guerrier" :
-                this.perso = new Guerrier(this.monde, this.nomPerso, 100, 5, 20,
-                        100, 100, 100, pos);
+                this.perso = new Guerrier(this.monde, this.nomPerso, 100, 90, 50,
+                        50, 50, 50, pos);
                 break;
 
             case "Archer" :
-                this.perso = new Archer(this.monde, this.nomPerso, 100, 50, 100,
-                        100, 100, 100, pos, 100);
+                this.perso = new Archer(this.monde, this.nomPerso, 100, 60, 50,
+                        50, 50, 50, pos, 100);
                 break;
         }
 
@@ -51,6 +51,9 @@ public class Joueur implements ElementGraphique, Combattant{
 
         // On ajoute le point du joueur à la liste des créatures sur la carte
         Positions.posCrea.add(this.pos);
+
+        // On lie ce joueur au panneau qui affiche les statistiques
+        this.monde.fenetreJeu.setStats(this);
     }
 
     public void joueTour(){

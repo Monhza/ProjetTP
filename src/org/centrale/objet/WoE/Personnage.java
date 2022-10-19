@@ -13,6 +13,7 @@ public abstract class Personnage extends Creature{
     public String nom;
     public int distAttMax;
 
+
     //constructeurs
     /**
      * Constructeur avec paramètres

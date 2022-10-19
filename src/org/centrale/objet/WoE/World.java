@@ -127,28 +127,28 @@ public class World {
 
         switch (type){
             case "Paysan":
-                newPerso = new Paysan(this, "Fermier", 100, 100, 100,
-                        100, 100, 100, pos);
+                newPerso = new Paysan(this, "Fermier", 100, 50, 50,
+                        50, 50, 50, pos);
                 pers.add((Paysan) newPerso);
                 break;
             case "Archer":
-                newPerso = new Archer(this, "Robin", 100, 50, 100,
-                        100, 100, 100, pos, 100);
+                newPerso = new Archer(this, "Robin", 100, 50, 50,
+                        50, 50, 50, pos, 100);
                 pers.add((Archer) newPerso);
                 break;
             case "Guerrier":
-                newPerso = new Guerrier(this, "Billie", 100, 100, 20,
-                        100, 100, 100, pos);
+                newPerso = new Guerrier(this, "Billie", 100, 50, 50,
+                        50, 50, 50, pos);
                 pers.add((Guerrier) newPerso);
                 break;
             case "Loup":
-                newPerso = new Loup(this, 100, 100, 100,100, 100,
-                        pos);
+                newPerso = new Loup(this, 100, 50, 50,
+                        50, 50, pos);
                 bugs.add((Loup) newPerso);
                 break;
             case "Lapin":
-                newPerso = new Lapin(this, 100, 100, 100,
-                        100, 100, pos);
+                newPerso = new Lapin(this, 100, 50, 50,
+                        50, 50, pos);
                 bugs.add((Lapin) newPerso);
                 break;
             default:
@@ -175,12 +175,12 @@ public class World {
                 break;
 
             case 2:
-                newObjet = new Epee(this, "Scalibur", 30, pos);
+                newObjet = new Epee(this, "Scalibur", 200, pos);
                 items.add(newObjet);
                 break;
 
             case 3:
-                newObjet = new Nourriture(this, 1,1,1,1, pos);
+                newObjet = new Nourriture(this, 10,10,10,10, pos);
                 items.add(newObjet);
                 break;
 
@@ -202,26 +202,55 @@ public class World {
     public void tourDeJeu(){
         player.joueTour();
 
-        for (Monstre bug : bugs){
+        // On crée une copie de la liste originelle à chaque fois pour éviter le
+        // déclenchement d'une exception
+        for (Monstre bug : new ArrayList<>(bugs)){
             bug.joueTour();
         }
 
-        for (Personnage perso : pers){
+        for (Personnage perso : new ArrayList<>(pers)){
             perso.joueTour();
         }
 
-        for (Objet item : items){
+        for (Objet item : new ArrayList<>(items)){
             item.joueTour();
         }
     }
 
     /**
-     * Méthode qui fait disparaitre un objet de la carte
+     * Méthode appelée à la mort d'une créature
+     * @param c
      */
-    public void disparaitreCarte(Objet item){
-        Positions.posItem.remove(item.pos);
-        Positions.item.remove(item);
+    public void mort(Creature c){
+        if (c instanceof Monstre){
+            this.bugs.remove(c);
+        }else if(c instanceof Personnage){
+            this.pers.remove(c);
+        }
+        this.disparaitreCarte(c);
+    }
 
-        this.affichageJeu.supprimerElement(item.tag);
+    /**
+     * Méthode qui fait disparaitre un objet de la carte
+     * La méthode fait aussi disparaitre l'élément des listes de World
+     */
+    public void disparaitreCarte(ElementDeJeu element){
+        if (element instanceof Creature) {
+            Positions.posCrea.remove(element.pos);
+            Positions.crea.remove(element);
+            if (element instanceof Monstre){
+                this.bugs.remove(element);
+            }else {
+                this.pers.remove(element);
+            }
+
+        } else if (element instanceof Objet) {
+            Positions.posItem.remove(element.pos);
+            Positions.item.remove(element);
+
+            this.items.remove(element);
+        }
+
+        this.affichageJeu.supprimerElement(element.tag);
     }
 }

@@ -124,8 +124,6 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
     public void mouseClicked(MouseEvent e) {
         selectionX = e.getX()/this.sideLengthX;
         selectionY = e.getY()/this.sideLengthY;
-
-        System.out.println(selectionX + "'" + selectionY);
     }
 
     @Override

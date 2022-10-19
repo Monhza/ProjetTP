@@ -1,5 +1,7 @@
 package org.centrale.objet.Interface;
 
+import org.centrale.objet.WoE.Joueur;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,6 +10,7 @@ public class FenetreJeu extends JFrame {
     private PanelJeu affichageJeu;
     private PanelInventaire inventaire;
     private PanelTouches touchesAction;
+    private PanelStat stats;
 
     public FenetreJeu(int widthCarte,int heightCarte, long tempsRefresh) {
         setTitle("Fenetre de jeu");
@@ -29,7 +32,7 @@ public class FenetreJeu extends JFrame {
         this.touchesAction = new PanelTouches(this);
         panWidth = this.touchesAction.PANEL_WIDTH;
         panHeight = this.touchesAction.PANEL_HEIGHT;
-        this.touchesAction.setBounds(650,250,panWidth, panHeight);
+        this.touchesAction.setBounds(650,200,panWidth, panHeight);
         this.add(this.touchesAction);
 
 
@@ -37,10 +40,18 @@ public class FenetreJeu extends JFrame {
         this.inventaire = new PanelInventaire(tempsRefresh);
         panWidth = this.inventaire.PANEL_WIDTH;
         panHeight = this.inventaire.PANEL_HEIGHT;
-        this.inventaire.setBounds(650,450,panWidth, panHeight);
+        this.inventaire.setBounds(650,430,panWidth, panHeight);
         this.add(this.inventaire);
         //On démarre l'affichage dynamique du panel
         this.inventaire.demarrerAffichage();
+
+
+        // Ajout du panel qui affiche les statistiques
+        this.stats = new PanelStat(tempsRefresh);
+        panWidth = this.stats.PANEL_WIDTH;
+        panHeight = this.stats.PANEL_HEIGHT;
+        this.stats.setBounds(675,10,panWidth, panHeight);
+        this.add(this.stats);
 
 
         setLocationRelativeTo(null);
@@ -57,6 +68,10 @@ public class FenetreJeu extends JFrame {
     public PanelInventaire getInventaireEcran(){ return inventaire;}
 
     public PanelTouches getTouchesAction(){ return touchesAction; };
+
+    public void setStats(Joueur joueur){
+        this.stats.lierAuJoueur(joueur);
+    }
 
     public static void main(String[] args){
         FenetreJeu test = new FenetreJeu(10, 10, 200);

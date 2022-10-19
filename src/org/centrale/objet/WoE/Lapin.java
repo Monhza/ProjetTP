@@ -45,16 +45,6 @@ public class Lapin extends Monstre{
         return this.idGraphique;
     }
 
-    @Override
-    public void joueTour() {
-        // On fait un tirage pour déterminer le comportement du personnage pendant ce tour
-        int choix = tirageAlea.nextInt(5);
 
-        switch (choix) {
-            // Si le tirage tombe sur 0, le personnage se déplace
-            case 0:
-                super.joueTour();
-        }
-    }
 
 }

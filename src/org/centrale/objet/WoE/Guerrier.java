@@ -57,8 +57,9 @@ public class Guerrier extends Personnage implements Combattant {
      */
     public boolean combattre(Creature c){
         int Rand;
+        int degats;
 
-        //Combat au corps à corps
+        //Combat au corps a corps
         if(this.pos.distance(c.pos)<=1 + Point2D.epsilon){
             System.out.println("Combat au corps a corps");
 
@@ -66,6 +67,7 @@ public class Guerrier extends Personnage implements Combattant {
 
             if(Rand>this.pageAtt){
                 System.out.println("Attaque ratée");
+                degats = 0;
             }
             else{
                 Rand = tirageAlea.nextInt(100)+1;
@@ -73,17 +75,24 @@ public class Guerrier extends Personnage implements Combattant {
 
                 if(Rand>c.pagePar){
                     System.out.println("Dégâts maximaux");
-                    c.ptVie-=this.degAtt;
+                    degats = -this.degAtt;
                 }
                 else{
                     System.out.println("Dégâts atténués");
-                    c.ptVie-=this.degAtt-c.ptPar;
+
+                    degats = -this.degAtt+c.ptPar;
                 }
             }
-        }
-        else{
+        } else{
             return false;
         }
+
+        // On vérifie qu'on ne "soigne" pas l'ennemi en l'attaquant en cas de parade importante
+        if (degats >=0){
+            System.out.println("Le personnage ne subit aucun dégats");
+            degats = 0;
+        }
+        c.modifierPV(degats);
         return true;
     }
 
@@ -91,15 +100,5 @@ public class Guerrier extends Personnage implements Combattant {
         return this.idGraphique;
     }
 
-    @Override
-    public void joueTour() {
-        // On fait un tirage pour déterminer le comportement du personnage pendant ce tour
-        int choix = tirageAlea.nextInt(5);
 
-        switch (choix) {
-            // Si le tirage tombe sur 0, le personnage se déplace
-            case 0:
-                super.joueTour();
-        }
-    }
 }
