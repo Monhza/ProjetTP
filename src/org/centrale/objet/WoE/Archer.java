@@ -35,6 +35,7 @@ public class Archer extends Personnage implements Combattant {
     /**
      * Constructeur de recopie
      *
+     *
      * @param a : Objet du type Archer qui sera copié
      */
     public Archer(Archer a) {
