@@ -1,6 +1,6 @@
 package org.centrale.objet.Interface;
 
-import org.centrale.objet.WoE.Joueur;
+import org.centrale.objet.WoE.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,6 +59,48 @@ public class FenetreJeu extends JFrame {
 
         setVisible(true);
 
+    }
+
+    /**
+     * Méthode qui permet de générer le monde sur la carte
+     */
+    public void chargerElements(World monde){
+
+        String tagElement;
+        int i = 0;
+
+        Joueur hero = monde.player;
+        tagElement = "tag" + i;
+        hero.tag = tagElement;
+        this.affichageJeu.chargerElement(hero.getImage(), hero.pos, tagElement);
+        i++;
+
+        for (Personnage perso : monde.pers){
+            tagElement = "tag" + i;
+            perso.tag = tagElement;
+
+            this.affichageJeu.chargerElement(perso.getImage(), perso.pos, tagElement);
+
+            i++;
+        }
+
+        for (Creature crea : monde.bugs){
+            tagElement = "tag" + i;
+            crea.tag = tagElement;
+
+            this.affichageJeu.chargerElement(crea.getImage(), crea.pos, tagElement);
+
+            i++;
+        }
+
+        for (Objet item : monde.items){
+            tagElement = "tag" + i;
+            item.tag = tagElement;
+
+            this.affichageJeu.chargerElement(item.getImage(), item.pos, tagElement);
+
+            i++;
+        }
     }
 
     public PanelJeu getAffichageJeu() {

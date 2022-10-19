@@ -1,11 +1,8 @@
 package org.centrale.objet.WoE;
 
-import java.util.Random;
-
 /**
  * La classe Archer permet de définir les attributs et les méthodes de ce personnage.
  */
-
 public class Archer extends Personnage implements Combattant {
 
     //Attributs
@@ -52,10 +49,11 @@ public class Archer extends Personnage implements Combattant {
         super();
     }
 
-    //Methodes
+
+
     /**
-     * Cette methode permet de avoir un combattre soit au corps à corps ou
-     * à distance avec l'un des autres creatures dans le monde.
+     * Cette methode permet de combattre soit au corps à corps ou
+     * à distance avec l'une des autres creatures dans le monde.
      *
      * @param c : Objet du type Creature avec laquelle l'archer va se battre.
      */
@@ -70,7 +68,7 @@ public class Archer extends Personnage implements Combattant {
             Rand = tirageAlea.nextInt(100) + 1;
 
             if(Rand>this.pageAtt){
-                System.out.println("Attaque ratée");
+                System.out.println("Attaque ratee");
                 degats = 0;
             }
             else{
@@ -78,11 +76,11 @@ public class Archer extends Personnage implements Combattant {
                 System.out.println("Attaque réussie");
 
                 if(Rand>c.pagePar){
-                    System.out.println("Dégâts maximaux");
+                    System.out.println("Degats maximaux");
                     degats = -this.degAtt;
                 }
                 else{
-                    System.out.println("Dégâts atténués");
+                    System.out.println("Dégâts attenues");
 
                     degats = -this.degAtt+c.ptPar;
                 }
@@ -98,10 +96,10 @@ public class Archer extends Personnage implements Combattant {
             this.nbFleches -= 1;
 
             if (Rand > this.pageAtt) {
-                System.out.println("Attaque ratée");
+                System.out.println("Attaque ratee");
                 degats = 0;
             } else {
-                System.out.println("Attaque réussie");
+                System.out.println("Attaque reussie");
                 degats = -this.degAtt;
             }
         }else{
@@ -110,12 +108,14 @@ public class Archer extends Personnage implements Combattant {
 
         // On vérifie qu'on ne "soigne" pas l'ennemi en l'attaquant en cas de parade importante
         if (degats >=0){
-            System.out.println("Le personnage ne subit aucun dégats");
+            System.out.println("Le personnage ne subit aucun degats");
             degats = 0;
         }
+
         c.modifierPV(degats);
         return true;
     }
+
 
     @Override
     public String getImage() {
