@@ -78,7 +78,7 @@ public class PanelStat extends AffichageGraphique implements Runnable {
     /**
      * Méthode qui décrit ce qu'il se passe pendant le run de l'instance
      */
-    public void pendantRun(){
+    public void refresh(){
         labelVie.setText(String.valueOf(player.perso.ptVie));
         labelDegats.setText(String.valueOf(player.perso.degAtt));
 

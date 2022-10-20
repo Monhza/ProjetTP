@@ -204,6 +204,9 @@ public class World {
      * Méthode appelée à chaque tour, c'est ici qu'on défini le séquencement d'un tour
      */
     public void tourDeJeu(){
+
+        System.out.println("\nNouveau tour");
+
         // On appelle la méthode joueTour de tous les éléments présents sur la carte
         player.joueTour();
 

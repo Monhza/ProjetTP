@@ -40,7 +40,33 @@ public class Loup extends Monstre implements Combattant{
         super();
     }
 
-    //Methodes
+
+    public void joueTour(){
+        // On fait un tirage pour déterminer le comportement du personnage pendant ce tour
+        int choix = tirageAlea.nextInt(5);
+
+        switch (choix) {
+            // Si le tirage tombe sur 0, le personnage se déplace
+            case 0:
+                this.deplace();
+                break;
+            case 1:
+                System.out.println("Le loup cherche une cible à attaquer...");
+
+                // On utilise une boucle qui vérifie l'attaquabilité des créatures sur la carte
+                attaque :{
+                    for (Creature c : Positions.crea){
+                        // Si une créature est attaquée, l'action est interrompue
+                        if (this.combattre(c)){
+                            break attaque;
+                        }
+                    }
+                    // Si l'action n'est jamais interrompue, c'est que personne n'était à portée
+                    System.out.println("Mais personne n'est à portée...");
+                }
+                break;
+        }
+    }
     /**
      * Cette methode permet de avoir un combattre soit au corps à corps ou
      * à distance avec l'un des autres creatures dans le monde.
@@ -48,6 +74,12 @@ public class Loup extends Monstre implements Combattant{
      * @param c : Objet du type Creature avec laquelle le loup va se battre.
      */
     public boolean combattre(Creature c){
+
+        // On empêche la créature de s'attaquer elle-même
+        if (c == this){
+            return false;
+        }
+
         int Rand;
         int degats;
 

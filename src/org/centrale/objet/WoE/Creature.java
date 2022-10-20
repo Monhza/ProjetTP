@@ -122,7 +122,7 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
 
     public void modifierPV(int deltaPV){
         this.ptVie += deltaPV;
-        System.out.println(this.getClass() + " Point de vie : " + this.ptVie);
+        System.out.println(" Point de vie du " + this.getClass().getSimpleName() + " : " + this.ptVie);
     }
 
     public void modifierDegAtt(int modDegAtt){

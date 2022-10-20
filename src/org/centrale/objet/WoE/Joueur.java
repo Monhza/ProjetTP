@@ -70,8 +70,6 @@ public class Joueur implements ElementGraphique, Combattant{
         // Ramasser items prend aussi en compte les nuages toxiques
         this.ramasserItem();
 
-        System.out.println("C'est votre tour...");
-
         this.touchesAction.initialiseAction();
         // On va créer une boucle qui tournera tant que le joueur n'aura pas effectué une action
         boolean actionEffectuee = false;

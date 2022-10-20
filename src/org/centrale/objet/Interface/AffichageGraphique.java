@@ -61,12 +61,8 @@ public abstract class AffichageGraphique extends JPanel implements Runnable {
                 throw new RuntimeException(e);
             }
 
-            this.pendantRun();
+            this.refresh();
         }
-    }
-
-    public void pendantRun(){
-        this.repaint();
     }
 
     /**

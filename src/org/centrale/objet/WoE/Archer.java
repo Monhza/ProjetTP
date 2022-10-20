@@ -59,6 +59,12 @@ public class Archer extends Personnage implements Combattant {
      * @param c : Objet du type Creature avec laquelle l'archer va se battre.
      */
     public boolean combattre(Creature c){
+
+        // On empêche la créature de s'attaquer elle-même
+        if (c == this){
+            return false;
+        }
+
         int Rand;
         int degats;
 
