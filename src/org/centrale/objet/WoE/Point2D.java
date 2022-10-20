@@ -1,21 +1,19 @@
 package org.centrale.objet.WoE;
 
-import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 /**
  * Classe qui représente une position sur la carte
  */
 public class Point2D {
 
+    static double epsilon = pow(10, -3);
     //Attributs
     public int X;
     public int Y;
-
     //boolean qui nous informe si le point doit être affiché sur la carte ou non
     public boolean presentSurCarte = true;
-
-    static double epsilon =  pow(10, -3);
 
     /**
      * Constructeur sans paramètres
@@ -29,7 +27,6 @@ public class Point2D {
      *
      * @param X : Coordonnée en X
      * @param Y : Coordonnée en Y
-     *
      */
     public Point2D(int X, int Y) {
         this.X = X;
@@ -50,10 +47,11 @@ public class Point2D {
 
 
     //Methodes
+
     /**
      * Cette methode permet de comparer un objet passé sur paramètre
      */
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
 
         if (o == this) {
             return true;
@@ -65,7 +63,7 @@ public class Point2D {
 
         Point2D p = (Point2D) o;
 
-        return ( (this.X == p.X) && (this.Y == p.Y) );
+        return ((this.X == p.X) && (this.Y == p.Y));
     }
 
     //Getters et Setters
@@ -92,6 +90,7 @@ public class Point2D {
     }
 
     //Methodes
+
     /**
      * Cette méthode permet de déplacer le point avec un delta dX et dY
      *

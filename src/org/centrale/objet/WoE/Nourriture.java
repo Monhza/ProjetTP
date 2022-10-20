@@ -2,7 +2,7 @@ package org.centrale.objet.WoE;
 
 /**
  * Classe nourriture
- *
+ * <p>
  * Modifie les statistiques du joueur quand consommé
  */
 public class Nourriture extends Objet {
@@ -14,7 +14,7 @@ public class Nourriture extends Objet {
 
     public String idGraphique = "pomme";
 
-    public Nourriture(World monde, int dA, int pPar, int paAtt, int paPar, Point2D p){
+    public Nourriture(World monde, int dA, int pPar, int paAtt, int paPar, Point2D p) {
         super(monde, p);
         this.modDegAtt = dA;
         this.modPtPar = pPar;
@@ -30,9 +30,10 @@ public class Nourriture extends Objet {
 
     /**
      * Appelée lorsqu'un joueur consomme la nourriture
+     *
      * @param joueur
      */
-    public void utiliser(Joueur joueur){
+    public void utiliser(Joueur joueur) {
         super.utiliser(joueur);
         joueur.modifierDegAtt(this.modDegAtt);
         joueur.modifierPtPar(this.modPtPar);
@@ -42,10 +43,11 @@ public class Nourriture extends Objet {
 
     /**
      * Appelé lorsque le joueur marche sur la nourriture
+     *
      * @param joueur
      */
     @Override
-    public void interagit(Joueur joueur){
+    public void interagit(Joueur joueur) {
         // Invoquer le super permet de faire disparaitre l'élément de la carte (pas du jeu)
         super.interagit(joueur);
 

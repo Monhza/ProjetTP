@@ -13,6 +13,7 @@ public abstract class ElementDeJeu {
         this.monde = monde;
         this.pos = pos;
     }
+
     public ElementDeJeu() {
     }
 }

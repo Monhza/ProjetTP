@@ -1,12 +1,15 @@
 package org.centrale.objet.Interface;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * Cette classe affiche une première fenêtre qui nous permet d'entrer les caractéristiques
  * du personnage joueur
- *
+ * <p>
  * Créé avec Swing UI designer
  */
 public class ConfigurateurPerso extends JFrame implements ActionListener, KeyListener {
@@ -34,15 +37,35 @@ public class ConfigurateurPerso extends JFrame implements ActionListener, KeyLis
         textNom.addKeyListener(this);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e){}
+    public static void main(String[] args) {
+        String[] types = {"Archer", "Guerrier"};
+        ConfigurateurPerso test = new ConfigurateurPerso(types);
+
+        while (!test.isOver()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        System.out.println(test.getNom());
+        System.out.println(test.getTypePerso());
+
+        test.closeWin();
+    }
 
     @Override
-    public void keyPressed(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyChar() == KeyEvent.VK_ENTER){
+        if (e.getKeyChar() == KeyEvent.VK_ENTER) {
             this.valider();
         }
     }
@@ -64,14 +87,13 @@ public class ConfigurateurPerso extends JFrame implements ActionListener, KeyLis
         }
     }
 
-
-    public void addListType(String[] listeType){
-        for (int i = 0 ; i<listeType.length; i++){
+    public void addListType(String[] listeType) {
+        for (int i = 0; i < listeType.length; i++) {
             this.comboType.addItem(listeType[i]);
         }
     }
 
-    public boolean isOver(){
+    public boolean isOver() {
 
         return this.validate;
     }
@@ -84,30 +106,11 @@ public class ConfigurateurPerso extends JFrame implements ActionListener, KeyLis
         return this.typePerso;
     }
 
-    public void closeWin(){
+    public void closeWin() {
 
         this.setVisible(false);
         this.dispose();
     }
-
-    public static void main(String[] args){
-        String[] types = {"Archer", "Guerrier"};
-        ConfigurateurPerso test = new ConfigurateurPerso(types);
-
-        while (!test.isOver()){
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        System.out.println(test.getNom());
-        System.out.println(test.getTypePerso());
-
-        test.closeWin();
-    }
-
 
 
 }

@@ -1,27 +1,25 @@
 package org.centrale.objet.WoE;
 
-import java.util.Random;
-
 /**
  * La classe Loup permet de définir les attibuts et les méthodes de ce monstre.
  */
-public class Loup extends Monstre implements Combattant{
+public class Loup extends Monstre implements Combattant {
     public String idGraphique = "loup";
 
     //Constructeurs
+
     /**
      * Constructeur avec paramètres
      *
-     * @param pV : Points de vie
-     * @param dA : Dégâts attaque
-     * @param pPar : Points de parade
+     * @param pV    : Points de vie
+     * @param dA    : Dégâts attaque
+     * @param pPar  : Points de parade
      * @param paAtt : Percentage d'attaque
      * @param paPar : Percentage de parade
-     * @param p : Position du monstre
-     *
+     * @param p     : Position du monstre
      */
     public Loup(World monde, int pV, int dA, int pPar, int paAtt, int paPar, Point2D p) {
-        super(monde, pV,dA,pPar, paAtt, paPar, p);
+        super(monde, pV, dA, pPar, paAtt, paPar, p);
     }
 
     /**
@@ -29,19 +27,19 @@ public class Loup extends Monstre implements Combattant{
      *
      * @param l : Objet du type Loup qui sera copié
      */
-    public Loup(Loup l){
+    public Loup(Loup l) {
         super(l);
     }
 
     /**
      * Constructeur sans paramètres
      */
-    public Loup(){
+    public Loup() {
         super();
     }
 
 
-    public void joueTour(){
+    public void joueTour() {
 
         super.joueTour();
 
@@ -49,25 +47,26 @@ public class Loup extends Monstre implements Combattant{
         this.attaqueLoup();
     }
 
-    public void attaqueLoup(){
+    public void attaqueLoup() {
         System.out.println("Le loup cherche une cible a attaquer...");
 
         // On utilise une boucle qui vérifie l'attaquabilité des créatures sur la carte
-        attaque :{
+        attaque:
+        {
 
             // Si le joueur est à proximité, on l'attaque en priorité
-            if (this.combattre(this.monde.player.perso)){
+            if (this.combattre(this.monde.player.perso)) {
                 break attaque;
             }
 
-            for (Creature c : Positions.crea){
+            for (Creature c : Positions.crea) {
                 // Si une créature est attaquée, l'action est interrompue
-                if (this.combattre(c)){
+                if (this.combattre(c)) {
                     break attaque;
                 }
             }
             // Si l'action n'est jamais interrompue, c'est que personne n'était à portée
-            System.out.println("Mais personne n\'est a portee...");
+            System.out.println("Mais personne n'est a portee...");
         }
     }
 
@@ -78,10 +77,10 @@ public class Loup extends Monstre implements Combattant{
      *
      * @param c : Objet du type Creature avec laquelle le loup va se battre.
      */
-    public boolean combattre(Creature c){
+    public boolean combattre(Creature c) {
 
         // On empêche la créature de s'attaquer elle-même
-        if (c == this){
+        if (c == this) {
             return false;
         }
 
@@ -89,35 +88,33 @@ public class Loup extends Monstre implements Combattant{
         int degats;
 
         //Combat au corps a corps
-        if(this.pos.distance(c.pos)<=1 + Point2D.epsilon){
+        if (this.pos.distance(c.pos) <= 1 + Point2D.epsilon) {
             System.out.println("Combat au corps a corps");
 
             Rand = tirageAlea.nextInt(100) + 1;
 
-            if(Rand>this.pageAtt){
+            if (Rand > this.pageAtt) {
                 System.out.println("Attaque ratee");
                 degats = 0;
-            }
-            else{
-                Rand = tirageAlea.nextInt(100)+1;
+            } else {
+                Rand = tirageAlea.nextInt(100) + 1;
                 System.out.println("Attaque reussie");
 
-                if(Rand>c.pagePar){
+                if (Rand > c.pagePar) {
                     System.out.println("Degats maximaux");
                     degats = -this.degAtt;
-                }
-                else{
+                } else {
                     System.out.println("Degats attenues");
 
-                    degats = -this.degAtt+c.ptPar;
+                    degats = -this.degAtt + c.ptPar;
                 }
             }
-        } else{
+        } else {
             return false;
         }
 
         // On vérifie qu'on ne "soigne" pas l'ennemi en l'attaquant en cas de parade importante
-        if (degats >= 0){
+        if (degats >= 0) {
             System.out.println("Le personnage ne subit aucun degats");
             degats = 0;
         }

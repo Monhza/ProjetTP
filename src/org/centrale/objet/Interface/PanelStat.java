@@ -17,14 +17,10 @@ public class PanelStat extends AffichageGraphique implements Runnable {
 
     public int PANEL_WIDTH = 150;
     public int PANEL_HEIGHT = 150;
-
-    protected long tempsRefresh;
-
     public HashMap<String, BufferedImage> imageElements;
-
     public boolean fleches = true;
-
     public Joueur player;
+    protected long tempsRefresh;
     private JLabel labelNom;
     private JLabel labelVie;
     private JLabel labelDegats;
@@ -33,11 +29,12 @@ public class PanelStat extends AffichageGraphique implements Runnable {
 
     /**
      * Constructeur auquel lon précise la période de rafraichissement de l'affichage
+     *
      * @param tempsRefresh
      */
     public PanelStat(long tempsRefresh) {
         this.add(mainPanel);
-        this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
         // On met à jour le temps de rafraichissement
         this.tempsRefresh = tempsRefresh;
@@ -54,6 +51,18 @@ public class PanelStat extends AffichageGraphique implements Runnable {
         this.chargerCheminsImages("\\graphismes_statistiques");
     }
 
+    public static void main(String[] args) {
+        JFrame f = new JFrame();
+        PanelStat panel = new PanelStat(50);
+
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        f.add(panel);
+        f.pack();
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+    }
+
     /**
      * Cette classe permet de charger les éléments à utiliser dans le panneau de statistiques
      */
@@ -64,12 +73,12 @@ public class PanelStat extends AffichageGraphique implements Runnable {
             imageChargee = ImageIO.read(imagesDisponibles.get(nomImage));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (IllegalArgumentException e){
-            throw new IllegalArgumentException("L\'image "+ nomImage+ " n\'est pas presente dans les elements graphiques disponibles");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("L'image " + nomImage + " n'est pas presente dans les elements graphiques disponibles");
         }
 
-        if (imageChargee == null){
-            new Exception("L\'image que nous essayez de charger n\'est pas disponible");
+        if (imageChargee == null) {
+            new Exception("L'image que nous essayez de charger n'est pas disponible");
         }
 
         imageElements.put(nomImage, imageChargee);
@@ -78,11 +87,11 @@ public class PanelStat extends AffichageGraphique implements Runnable {
     /**
      * Méthode qui décrit ce qu'il se passe pendant le run de l'instance
      */
-    public void refresh(){
+    public void refresh() {
         labelVie.setText(String.valueOf(player.perso.ptVie));
         labelDegats.setText(String.valueOf(player.perso.degAtt));
 
-        if (fleches){
+        if (fleches) {
             labelFleches.setText(String.valueOf(((Archer) player.perso).nbFleches));
         }
     }
@@ -90,7 +99,7 @@ public class PanelStat extends AffichageGraphique implements Runnable {
     /**
      * On place les images utiles pour notre panneau statistiques
      */
-    protected void placerImages(Graphics2D g2D){
+    protected void placerImages(Graphics2D g2D) {
 
         BufferedImage imageCoeur, imageDegats, imageFleches;
 
@@ -102,20 +111,21 @@ public class PanelStat extends AffichageGraphique implements Runnable {
         imageDegats = imageElements.get("attaque");
         imageFleches = imageElements.get("fleche");
 
-        int yRef = labelVie.getY() ;
+        int yRef = labelVie.getY();
         g2D.drawImage(imageCoeur, 20, yRef, 25, 25, null);
 
-        yRef = labelDegats.getY() ;
+        yRef = labelDegats.getY();
         g2D.drawImage(imageDegats, 20, yRef, 25, 25, null);
 
-        yRef = labelFleches.getY() ;
+        yRef = labelFleches.getY();
         g2D.drawImage(imageFleches, 20, yRef, 25, 25, null);
 
     }
 
     /**
      * Affichage des éléments de la carte
-     * @param g  the <code>Graphics</code> context in which to paint
+     *
+     * @param g the <code>Graphics</code> context in which to paint
      */
     @Override
     public void paint(Graphics g) {
@@ -126,12 +136,12 @@ public class PanelStat extends AffichageGraphique implements Runnable {
         this.placerImages(g2D);
     }
 
-
     /**
      * On lie un joueur au panneau pour démarrer l'affichage dynamique
+     *
      * @param player
      */
-    public void lierAuJoueur(Joueur player){
+    public void lierAuJoueur(Joueur player) {
         this.player = player;
 
         labelNom.setText(player.nomPerso);
@@ -140,25 +150,11 @@ public class PanelStat extends AffichageGraphique implements Runnable {
         // C'est pas propre, mais j'ai fait ça vie :x
         try {
             Archer testArcher = (Archer) player.perso;
-        }catch (Exception e){
+        } catch (Exception e) {
             this.fleches = false;
             labelFleches.setText("X");
         }
 
         this.demarrerAffichage();
-    }
-
-
-
-    public static void main(String[] args){
-        JFrame f = new JFrame();
-        PanelStat panel = new PanelStat(50);
-
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        f.add(panel);
-        f.pack();
-        f.setLocationRelativeTo(null);
-        f.setVisible(true);
     }
 }

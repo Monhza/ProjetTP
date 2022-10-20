@@ -11,22 +11,22 @@ public class Archer extends Personnage implements Combattant {
     public String idGraphique = "archer";
 
     //Constructeurs
+
     /**
      * Constructeur avec paramètres
      *
-     * @param n : Nom de l'archer
-     * @param pV : Points de vie
-     * @param dA : Dégâts attaque
-     * @param pPar : Points de parade
-     * @param paAtt : Percentage d'attaque
-     * @param paPar : Percentage de parade
-     * @param dMax : Distance maximal d'attaque
-     * @param p : Position de l'archer
-     * @param nbFleches : Nombre de fléches disponibles
-     *
+     * @param n         : Nom de l'archer
+     * @param pV        : Points de vie
+     * @param dA        : Dégâts attaque
+     * @param pPar      : Points de parade
+     * @param paAtt     : Percentage d'attaque
+     * @param paPar     : Percentage de parade
+     * @param dMax      : Distance maximal d'attaque
+     * @param p         : Position de l'archer
+     * @param nbFleches : Nombre de flèches disponibles
      */
     public Archer(World monde, String n, int pV, int dA, int pPar,
-                  int paAtt, int paPar, int dMax,  Point2D p, int nbFleches) {
+                  int paAtt, int paPar, int dMax, Point2D p, int nbFleches) {
 
         super(monde, n, pV, dA, pPar, paAtt, paPar, dMax, p);
         this.nbFleches = nbFleches;
@@ -34,7 +34,6 @@ public class Archer extends Personnage implements Combattant {
 
     /**
      * Constructeur de recopie
-     *
      *
      * @param a : Objet du type Archer qui sera copié
      */
@@ -46,10 +45,9 @@ public class Archer extends Personnage implements Combattant {
     /**
      * Constructeur sans paramètres
      */
-    public Archer(){
+    public Archer() {
         super();
     }
-
 
 
     /**
@@ -58,10 +56,10 @@ public class Archer extends Personnage implements Combattant {
      *
      * @param c : Objet du type Creature avec laquelle l'archer va se battre.
      */
-    public boolean combattre(Creature c){
+    public boolean combattre(Creature c) {
 
         // On empêche la créature de s'attaquer elle-même
-        if (c == this){
+        if (c == this) {
             return false;
         }
 
@@ -69,33 +67,31 @@ public class Archer extends Personnage implements Combattant {
         int degats;
 
         //Combat au corps a corps
-        if(this.pos.distance(c.pos)<=1 + Point2D.epsilon){
+        if (this.pos.distance(c.pos) <= 1 + Point2D.epsilon) {
             System.out.println("Combat au corps a corps");
 
             Rand = tirageAlea.nextInt(100) + 1;
 
-            if(Rand>this.pageAtt){
+            if (Rand > this.pageAtt) {
                 System.out.println("Attaque ratee");
                 degats = 0;
-            }
-            else{
-                Rand = tirageAlea.nextInt(100)+1;
+            } else {
+                Rand = tirageAlea.nextInt(100) + 1;
                 System.out.println("Attaque réussie");
 
-                if(Rand>c.pagePar){
+                if (Rand > c.pagePar) {
                     System.out.println("Degats maximaux");
                     degats = -this.degAtt;
-                }
-                else{
+                } else {
                     System.out.println("Dégâts attenues");
 
-                    degats = -this.degAtt+c.ptPar;
+                    degats = -this.degAtt + c.ptPar;
                 }
             }
         }
 
         //Combat a distance
-        else if (this.pos.distance(c.pos)>1 && this.pos.distance(c.pos)<this.distAttMax) {
+        else if (this.pos.distance(c.pos) > 1 && this.pos.distance(c.pos) < this.distAttMax) {
             System.out.println("Combat a distance");
 
             Rand = tirageAlea.nextInt(100) + 1;
@@ -109,12 +105,12 @@ public class Archer extends Personnage implements Combattant {
                 System.out.println("Attaque reussie");
                 degats = -this.degAtt;
             }
-        }else{
+        } else {
             return false;
         }
 
         // On vérifie qu'on ne "soigne" pas l'ennemi en l'attaquant en cas de parade importante
-        if (degats >=0){
+        if (degats >= 0) {
             System.out.println("Le personnage ne subit aucun degats");
             degats = 0;
         }

@@ -9,21 +9,21 @@ public class Paysan extends Personnage {
 
 
     //Constructeurs
+
     /**
      * Constructeur avec paramètres
      *
-     * @param n : Nom du paysan
-     * @param pV : Points de vie
-     * @param dA : Dégâts attaque
-     * @param pPar : Points de parade
+     * @param n     : Nom du paysan
+     * @param pV    : Points de vie
+     * @param dA    : Dégâts attaque
+     * @param pPar  : Points de parade
      * @param paAtt : Percentage d'attaque
      * @param paPar : Percentage de parade
-     * @param dMax : Distance maximal d'attaque
-     * @param p : Position du personnage
-     *
+     * @param dMax  : Distance maximal d'attaque
+     * @param p     : Position du personnage
      */
     public Paysan(World monde, String n, int pV, int dA, int pPar,
-                  int paAtt, int paPar, int dMax,  Point2D p){
+                  int paAtt, int paPar, int dMax, Point2D p) {
 
         super(monde, n, pV, dA, pPar, paAtt, paPar, dMax, p);
 
@@ -43,7 +43,7 @@ public class Paysan extends Personnage {
     /**
      * Constructeur sans paramètres
      */
-    public Paysan(){
+    public Paysan() {
         super();
     }
 

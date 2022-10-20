@@ -1,10 +1,5 @@
 package org.centrale.objet.WoE;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 public class TestWoE {
     public static void main(String[] arg) {
 
@@ -21,17 +16,18 @@ public class TestWoE {
 
         boolean gameOn = true;
 
-        while(gameOn){
+        while (gameOn) {
 
 
             test.tourDeJeu();
 
 
-            if(test.player.perso.ptVie <= 0){
+            if (test.player.perso.ptVie <= 0) {
                 gameOn = false;
+
+                System.out.println("Le joueur est mort, fin du jeu");
             }
         }
-
 
 
     }

@@ -1,14 +1,17 @@
 package org.centrale.objet.WoE;
 
-import java.security.InvalidParameterException;
-import java.util.*;
+import org.centrale.objet.Interface.ConfigurateurPerso;
+import org.centrale.objet.Interface.PanelInventaire;
+import org.centrale.objet.Interface.PanelTouches;
 
-import  org.centrale.objet.Interface.*;
+import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Classe permettant de gérer un joueur humain qui pourra effectuer des actions pendant son tour
  */
-public class Joueur implements ElementGraphique, Combattant{
+public class Joueur implements ElementGraphique, Combattant {
 
     public PanelTouches touchesAction;
     public PanelInventaire inventaireEcran;
@@ -22,7 +25,7 @@ public class Joueur implements ElementGraphique, Combattant{
     public String idGraphique = "hero";
     public String tag;
 
-    public Joueur(World monde, Point2D pos){
+    public Joueur(World monde, Point2D pos) {
 
         this.monde = monde;
         this.touchesAction = monde.fenetreJeu.getTouchesAction();
@@ -37,13 +40,13 @@ public class Joueur implements ElementGraphique, Combattant{
         this.choixPerso(typesPossibles);
 
         // Une fois le personnage choisi, on l'initialise
-        switch (this.typePerso){
-            case "Guerrier" :
+        switch (this.typePerso) {
+            case "Guerrier":
                 this.perso = new Guerrier(this.monde, this.nomPerso, 100, 90, 50,
                         50, 50, 50, pos);
                 break;
 
-            case "Archer" :
+            case "Archer":
                 this.perso = new Archer(this.monde, this.nomPerso, 100, 60, 50,
                         50, 50, 50, pos, 100);
                 break;
@@ -62,7 +65,7 @@ public class Joueur implements ElementGraphique, Combattant{
     /**
      * Classe appelée au tour du joueur
      */
-    public void joueTour(){
+    public void joueTour() {
         String[] descriptionAction;
 
         // On vérifie s'il y a un item sur la case du personnage au début du tour
@@ -76,7 +79,7 @@ public class Joueur implements ElementGraphique, Combattant{
         while (!actionEffectuee) {
 
             // On est à l'écoute de l'entrée d'un ordre donné grâce aux touches présentes sur l'interface
-            if (this.touchesAction.isActionEffectuee()){
+            if (this.touchesAction.isActionEffectuee()) {
                 // On récupère la commande
                 descriptionAction = this.touchesAction.getDescriptionAction();
 
@@ -98,12 +101,13 @@ public class Joueur implements ElementGraphique, Combattant{
 
     /**
      * Méthode appelée à l'initialisation du personnage pour afficher un panneau de sélection au joueur
+     *
      * @param types
      */
-    public void choixPerso(String[] types){
+    public void choixPerso(String[] types) {
         ConfigurateurPerso fenetreConfig = new ConfigurateurPerso(types);
 
-        while (!fenetreConfig.isOver()){
+        while (!fenetreConfig.isOver()) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -123,15 +127,15 @@ public class Joueur implements ElementGraphique, Combattant{
      * Cette méthode donne si une action est "valide" (possible) ou non.
      * Si l'action est valide, la méthode va aussi l'effectuer
      */
-    public boolean verifieAction(String[] descriptionAction){
+    public boolean verifieAction(String[] descriptionAction) {
 
-        if (descriptionAction.length < 1){
+        if (descriptionAction.length < 1) {
             throw new InvalidParameterException("La description des action année par le panel touche n'est pas conforme");
         }
 
-        switch (descriptionAction[0]){
+        switch (descriptionAction[0]) {
             // En cas de déplacement, on interprète les données de coordonnées données par le panel touches
-            case "deplacement" :
+            case "deplacement":
                 // Les touches nous donnent le delta des coordonnées souhaitées par l'utilisateur
                 String[] stringDelta = descriptionAction[1].split(",");
 
@@ -142,9 +146,9 @@ public class Joueur implements ElementGraphique, Combattant{
                 int Yvoulu = dYvoulu + this.pos.getY();
 
                 // On essaie le déplacement
-                return this.essayerDeplace(Xvoulu,Yvoulu);
+                return this.essayerDeplace(Xvoulu, Yvoulu);
 
-            case "attaque" :
+            case "attaque":
                 // On récupère la case visée
                 String[] cible = descriptionAction[1].split(",");
 
@@ -154,7 +158,7 @@ public class Joueur implements ElementGraphique, Combattant{
                 // On trouve quelle créature est présente sur la carte
                 Creature crea = Positions.whatCreature(Xcible, Ycible);
 
-                if (crea != null){
+                if (crea != null) {
                     return this.combattre(crea);
                 }
 
@@ -168,8 +172,7 @@ public class Joueur implements ElementGraphique, Combattant{
                 return utiliserDepuisInventaire(tagItem);
 
 
-
-            default :
+            default:
                 return false;
         }
     }
@@ -183,9 +186,9 @@ public class Joueur implements ElementGraphique, Combattant{
         // Liste des possibilités de déplacement du personnage
         List<int[]> listePossible = Positions.see_possibilities(this.pos);
 
-        for (int[] element : listePossible){
+        for (int[] element : listePossible) {
             // Si le déplacement est possible, alors on l'effectue
-            if ((X == element[0]) && (Y == element[1])){
+            if ((X == element[0]) && (Y == element[1])) {
                 this.pos.setX(X);
                 this.pos.setY(Y);
 
@@ -203,11 +206,11 @@ public class Joueur implements ElementGraphique, Combattant{
      * Méthode appelée à la fin de chaque tour
      * Si le personnage se trouve sur un item, décrit le comportement de celui ci
      */
-    public void ramasserItem(){
+    public void ramasserItem() {
         Objet item;
 
         // On vérifie s'il y a un item sur la case du personnage à la fin de son tour
-        if (Positions.isItem()[pos.getX()][pos.getY()]){
+        if (Positions.isItem()[pos.getX()][pos.getY()]) {
             item = Positions.whatItem(pos.getX(), pos.getY());
 
             item.interagit(this);
@@ -224,48 +227,49 @@ public class Joueur implements ElementGraphique, Combattant{
         return idGraphique;
     }
 
-    public int getPV(){
+    public int getPV() {
         return this.perso.ptVie;
     }
 
     /**
      * Change les points de vie du personnage d'un delta passé en paramètre
+     *
      * @param deltaPV
      */
-    public void modifierPV(int deltaPV){
+    public void modifierPV(int deltaPV) {
         this.perso.ptVie += deltaPV;
 
         System.out.println("Le joueur a maintenant " + this.perso.ptVie + " PV");
     }
 
 
-    public void modifierDegAtt(int modDegAtt){
+    public void modifierDegAtt(int modDegAtt) {
         this.perso.modifierDegAtt(modDegAtt);
     }
 
-    public void modifierPtPar(int modPtPar){
+    public void modifierPtPar(int modPtPar) {
         this.perso.modifierPtPar(modPtPar);
     }
 
-    public void modifierPageAtt(int modPageAtt){
+    public void modifierPageAtt(int modPageAtt) {
         this.perso.modifierPageAtt(modPageAtt);
     }
 
-    public void modifierPagePar(int modPagePar){
+    public void modifierPagePar(int modPagePar) {
         this.perso.modifierPagePar(modPagePar);
     }
 
-    public void setPtDeg(int ptDeg){
+    public void setPtDeg(int ptDeg) {
         this.perso.setPtDeg(ptDeg);
     }
 
-    public void ajoutInventaire(Objet item){
+    public void ajoutInventaire(Objet item) {
         inventaire.put(item.tag, item);
 
         this.inventaireEcran.chargerElement(item.getImage(), item.tag);
     }
 
-    public void retirerInventaire(String tag){
+    public void retirerInventaire(String tag) {
         inventaire.remove(tag);
 
         this.inventaireEcran.supprimerElement(tag);
@@ -274,12 +278,13 @@ public class Joueur implements ElementGraphique, Combattant{
     /**
      * Classe appelée lorsque le joueur veut utiliser un élément dans l'inventaire
      * On l'appelle grâce à son tag, le tag est donné par la fenêtre de jeu
+     *
      * @param tag
      * @return
      */
-    public boolean utiliserDepuisInventaire(String tag){
+    public boolean utiliserDepuisInventaire(String tag) {
 
-        if (tag == null){
+        if (tag == null) {
             System.out.println("Il n'y a pas d'item sur la case sélectionnée");
             return false;
         }

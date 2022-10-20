@@ -2,10 +2,9 @@ package org.centrale.objet.WoE;
 
 /**
  * La classe PotionSoin permet de générer des potions qui restaurent les point de vie des protagonistes.
- *
  */
 
-public class PotionSoin extends Objet{
+public class PotionSoin extends Objet {
 
     //Attributs
     public int soin; //Le nombre de points de vie qui sont restaurés par la potion
@@ -16,9 +15,9 @@ public class PotionSoin extends Objet{
     /**
      * Constructeur avec paramètres
      *
-     * @param  soin : Nombre de points de vie restaurés par la potion
+     * @param soin     : Nombre de points de vie restaurés par la potion
      * @param quantite : Nombre de potions
-     * @param p : Position de la position
+     * @param p        : Position de la position
      */
     public PotionSoin(World monde, int soin, int quantite, Point2D p) {
         super(monde, p);
@@ -42,19 +41,21 @@ public class PotionSoin extends Objet{
 
     /**
      * défini le comportement de la potion s'il est utilisé par un joueur
+     *
      * @param joueur
      */
-    public void utiliser(Joueur joueur){
+    public void utiliser(Joueur joueur) {
         super.utiliser(joueur);
         joueur.modifierPV(this.soin);
     }
 
     /**
      * Méthode appelée lorsque le joueur passe sur le point de la carte associé à l'objet
+     *
      * @param joueur
      */
     @Override
-    public void interagit(Joueur joueur){
+    public void interagit(Joueur joueur) {
         // Invoquer le super permet de faire disparaitre l'élément de la carte (pas du jeu)
         super.interagit(joueur);
 

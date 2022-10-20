@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  * La classe World permet de générer le monde dans lequel nos personnages vont pouvoir interagir
- *
+ * <p>
  * Elle contient une méthode qui permet de placer les personnages et les mobs sur un point
  * aléatoire sur la carte tout en s'assurant qu'aucun personnage ne se situera sur le même point
  *
@@ -20,16 +20,14 @@ import java.util.Random;
  */
 public class World {
 
+    public static int tailleParDefaut = 15;
+    public final int TEMPS_REFRESH = 50;
     public List<Personnage> pers;
     public List<Monstre> bugs;
     public List<Objet> items;
     public Joueur player;
-
     public FenetreJeu fenetreJeu;
     public PanelJeu affichageJeu;
-
-    public static int tailleParDefaut = 15;
-    public final int TEMPS_REFRESH = 50;
 
     /**
      * Constructeur de la méthode
@@ -40,7 +38,7 @@ public class World {
         items = new LinkedList<>();
 
         // On crée une fenêtre de jeu qui se rafraichi toutes les 200 millisecondes
-        this.fenetreJeu = new FenetreJeu(tailleParDefaut,tailleParDefaut, TEMPS_REFRESH);
+        this.fenetreJeu = new FenetreJeu(tailleParDefaut, tailleParDefaut, TEMPS_REFRESH);
         this.affichageJeu = this.fenetreJeu.getAffichageJeu();
     }
 
@@ -54,7 +52,7 @@ public class World {
      * @param nbGue Nombre de Guerriers crées
      * @param nbLou Nombre de Loups crées
      */
-    public void creerMondeAlea(int nbArc, int nbPay, int nbLap, int nbGue, int nbLou, int nbItem){
+    public void creerMondeAlea(int nbArc, int nbPay, int nbLap, int nbGue, int nbLou, int nbItem) {
         // On génère la population sur la carte
         this.genererPop(nbArc, nbPay, nbLap, nbGue, nbLou, nbItem);
 
@@ -66,16 +64,17 @@ public class World {
     /**
      * Cette fonction génère toute la population de la carte
      * C'est à dire un joueur et un nombre défini de créatures
+     *
      * @param nbArc
      * @param nbPay
      * @param nbLap
      * @param nbGue
      * @param nbLou
      */
-    public void genererPop(int nbArc, int nbPay, int nbLap, int nbGue, int nbLou, int nbItem){
+    public void genererPop(int nbArc, int nbPay, int nbLap, int nbGue, int nbLou, int nbItem) {
 
         // On génère un nombre donné de points sur la carte
-        ArrayList<Point2D> listePoints = Positions.genererPointsAlea(nbArc+nbPay+nbLap+nbGue+nbLou+nbItem+1
+        ArrayList<Point2D> listePoints = Positions.genererPointsAlea(nbArc + nbPay + nbLap + nbGue + nbLou + nbItem + 1
                 , tailleParDefaut, tailleParDefaut);
 
         // On crée le personnage du joueur
@@ -84,32 +83,32 @@ public class World {
         // On crée tous les pnj qui vont peupler la carte
         int j = 1;
 
-        for (int i=0 ; i <nbArc ; i++){
+        for (int i = 0; i < nbArc; i++) {
             this.creerCreature("Archer", listePoints.get(j));
             j++;
         }
 
-        for (int i=0 ; i <nbPay ; i++){
+        for (int i = 0; i < nbPay; i++) {
             this.creerCreature("Paysan", listePoints.get(j));
             j++;
         }
 
-        for (int i=0 ; i <nbLap ; i++){
+        for (int i = 0; i < nbLap; i++) {
             this.creerCreature("Lapin", listePoints.get(j));
             j++;
         }
 
-        for (int i=0 ; i <nbGue ; i++){
+        for (int i = 0; i < nbGue; i++) {
             this.creerCreature("Guerrier", listePoints.get(j));
             j++;
         }
 
-        for (int i=0 ; i <nbLou ; i++){
+        for (int i = 0; i < nbLou; i++) {
             this.creerCreature("Loup", listePoints.get(j));
             j++;
         }
 
-        for (int i=0 ; i<nbItem ; i++){
+        for (int i = 0; i < nbItem; i++) {
             this.creerItem(listePoints.get(j));
             j++;
         }
@@ -118,13 +117,14 @@ public class World {
     /**
      * Cette méthode nous permet de contrôler la création d'une créature
      * On définit manuellement les statistiques des pnjs
+     *
      * @param type : type de la créature
-     * @param pos : position de la créature
+     * @param pos  : position de la créature
      */
-    public void creerCreature(String type, Point2D pos){
+    public void creerCreature(String type, Point2D pos) {
         Creature newPerso;
 
-        switch (type){
+        switch (type) {
             case "Paysan":
                 newPerso = new Paysan(this, "Fermier", 100, 50, 50,
                         50, 50, 50, pos);
@@ -162,9 +162,10 @@ public class World {
     /**
      * Cette méthode est appelée pour créer un item aléatoirement
      * parmi les items qu'il est possible de créer
+     *
      * @param pos
      */
-    public void creerItem(Point2D pos){
+    public void creerItem(Point2D pos) {
         Random rand = new Random();
 
         int opt;
@@ -184,7 +185,7 @@ public class World {
                 break;
 
             case 3:
-                newObjet = new Nourriture(this, 10,10,10,10, pos);
+                newObjet = new Nourriture(this, 10, 10, 10, 10, pos);
                 items.add(newObjet);
                 break;
 
@@ -203,7 +204,7 @@ public class World {
     /**
      * Méthode appelée à chaque tour, c'est ici qu'on défini le séquencement d'un tour
      */
-    public void tourDeJeu(){
+    public void tourDeJeu() {
 
         System.out.println("\nNouveau tour");
 
@@ -212,27 +213,28 @@ public class World {
 
         // On crée une copie de la liste originelle à chaque fois pour éviter le
         // déclenchement d'une exception
-        for (Monstre bug : new ArrayList<>(bugs)){
+        for (Monstre bug : new ArrayList<>(bugs)) {
             bug.joueTour();
         }
 
-        for (Personnage perso : new ArrayList<>(pers)){
+        for (Personnage perso : new ArrayList<>(pers)) {
             perso.joueTour();
         }
 
-        for (Objet item : new ArrayList<>(items)){
+        for (Objet item : new ArrayList<>(items)) {
             item.joueTour();
         }
     }
 
     /**
      * Méthode appelée à la mort d'une créature
+     *
      * @param c
      */
-    public void mort(Creature c){
-        if (c instanceof Monstre){
+    public void mort(Creature c) {
+        if (c instanceof Monstre) {
             this.bugs.remove(c);
-        }else if(c instanceof Personnage){
+        } else if (c instanceof Personnage) {
             this.pers.remove(c);
         }
         this.disparaitreCarte(c);
@@ -242,13 +244,13 @@ public class World {
      * Méthode qui fait disparaitre un objet de la carte
      * La méthode fait aussi disparaitre l'élément des listes de World
      */
-    public void disparaitreCarte(ElementDeJeu element){
+    public void disparaitreCarte(ElementDeJeu element) {
         if (element instanceof Creature) {
             Positions.posCrea.remove(element.pos);
             Positions.crea.remove(element);
-            if (element instanceof Monstre){
+            if (element instanceof Monstre) {
                 this.bugs.remove(element);
-            }else {
+            } else {
                 this.pers.remove(element);
             }
 

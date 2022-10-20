@@ -41,7 +41,7 @@ public abstract class AffichageGraphique extends JPanel implements Runnable {
     /**
      * Cette méthode permet de démarrer l'affichage dynamique du jeu via un Thread
      */
-    public void demarrerAffichage(){
+    public void demarrerAffichage() {
         this.refreshOn = true;
         this.refreshThread = new Thread(this);
         this.refreshThread.setDaemon(true);
@@ -68,7 +68,7 @@ public abstract class AffichageGraphique extends JPanel implements Runnable {
     /**
      * Méthode appelée lors du jeu
      */
-    public void refresh(){
+    public void refresh() {
         this.repaint();
     }
 }

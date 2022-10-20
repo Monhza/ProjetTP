@@ -11,18 +11,17 @@ public class Guerrier extends Personnage implements Combattant {
     /**
      * Constructeur avec paramètres
      *
-     * @param n : Nom du guerrier
-     * @param pV : Points de vie
-     * @param dA : Degats attaque
-     * @param pPar : Points de parade
+     * @param n     : Nom du guerrier
+     * @param pV    : Points de vie
+     * @param dA    : Degats attaque
+     * @param pPar  : Points de parade
      * @param paAtt : Percentage d'attaque
      * @param paPar : Percentage de parade
-     * @param dMax : Distance maximal d'attaque
-     * @param p : Position du guerrier
-     *
+     * @param dMax  : Distance maximal d'attaque
+     * @param p     : Position du guerrier
      */
     public Guerrier(World monde, String n, int pV, int dA, int pPar,
-                  int paAtt, int paPar, int dMax,  Point2D p) {
+                    int paAtt, int paPar, int dMax, Point2D p) {
 
         super(monde, n, pV, dA, pPar, paAtt, paPar, dMax, p);
     }
@@ -41,7 +40,7 @@ public class Guerrier extends Personnage implements Combattant {
     /**
      * Constructeur sans paramètres
      */
-    public Guerrier(){
+    public Guerrier() {
         super();
     }
 
@@ -49,15 +48,15 @@ public class Guerrier extends Personnage implements Combattant {
     /**
      * Cette methode permet d'avoir un combat soit au corps à corps ou
      * à distance avec l'un des autres creatures dans le monde.
-     *
+     * <p>
      * Renvoie true si l'attaque est possible, false sinon
      *
      * @param c : Objet du type Creature avec laquelle le guerrier va se battre.
      */
-    public boolean combattre(Creature c){
+    public boolean combattre(Creature c) {
 
         // On empêche la créature de s'attaquer elle-même
-        if (c == this){
+        if (c == this) {
             return false;
         }
 
@@ -65,35 +64,33 @@ public class Guerrier extends Personnage implements Combattant {
         int degats;
 
         //Combat au corps a corps
-        if(this.pos.distance(c.pos)<=1 + Point2D.epsilon){
+        if (this.pos.distance(c.pos) <= 1 + Point2D.epsilon) {
             System.out.println("Combat au corps a corps");
 
             Rand = tirageAlea.nextInt(100) + 1;
 
-            if(Rand>this.pageAtt){
+            if (Rand > this.pageAtt) {
                 System.out.println("Attaque ratee");
                 degats = 0;
-            }
-            else{
-                Rand = tirageAlea.nextInt(100)+1;
+            } else {
+                Rand = tirageAlea.nextInt(100) + 1;
                 System.out.println("Attaque reussie");
 
-                if(Rand>c.pagePar){
+                if (Rand > c.pagePar) {
                     System.out.println("Degats maximaux");
                     degats = -this.degAtt;
-                }
-                else{
+                } else {
                     System.out.println("Degats attenues");
 
-                    degats = -this.degAtt+c.ptPar;
+                    degats = -this.degAtt + c.ptPar;
                 }
             }
-        } else{
+        } else {
             return false;
         }
 
         // On vérifie qu'on ne "soigne" pas l'ennemi en l'attaquant en cas de parade importante
-        if (degats >=0){
+        if (degats >= 0) {
             System.out.println("Le personnage ne subit aucun dégats");
             degats = 0;
         }

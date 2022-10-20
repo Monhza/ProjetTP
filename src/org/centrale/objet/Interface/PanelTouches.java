@@ -26,7 +26,7 @@ public class PanelTouches extends JPanel implements ActionListener {
 
     public PanelTouches(FenetreJeu fenetre) {
         this.add(mainPanel);
-        this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 
         this.fenetre = fenetre;
 
@@ -40,6 +40,7 @@ public class PanelTouches extends JPanel implements ActionListener {
 
     /**
      * Méthode qui indique les commandes envoyées au jeu lors de l'appui sur une touche particulière
+     *
      * @param e the event to be processed
      */
     @Override
@@ -66,17 +67,18 @@ public class PanelTouches extends JPanel implements ActionListener {
             this.descriptionAction = new String[]{"utiliser", tag};
         }
 
-        if (this.descriptionAction != null){
+        if (this.descriptionAction != null) {
             this.actionEffectuee = true;
         }
     }
 
     /**
      * Retourne si une action a été effectuée ou non dans le panel touches
+     *
      * @return boolean
      */
-    public boolean isActionEffectuee(){
-        if (this.actionEffectuee){
+    public boolean isActionEffectuee() {
+        if (this.actionEffectuee) {
             this.actionEffectuee = false;
             return true;
         }
@@ -86,9 +88,10 @@ public class PanelTouches extends JPanel implements ActionListener {
     /**
      * Méthode qui permet au jeu de demander quelle a été la dernière commande entrée par le joueur
      * Une fois la commande récupérée, le panel réinitialise la commande
+     *
      * @return
      */
-    public String[] getDescriptionAction(){
+    public String[] getDescriptionAction() {
         String[] actionTemp = this.descriptionAction.clone();
 
         // On réinitialise l'action à l'appel de cette méthode
@@ -102,7 +105,7 @@ public class PanelTouches extends JPanel implements ActionListener {
      * Permet d'initialiser la commande
      * Permet de gérer plus ergonomiquement le jeu du point de vue du joueur
      */
-    public void initialiseAction(){
+    public void initialiseAction() {
         this.actionEffectuee = false;
         this.descriptionAction = null;
     }
