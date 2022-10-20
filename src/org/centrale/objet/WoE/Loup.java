@@ -51,7 +51,7 @@ public class Loup extends Monstre implements Combattant{
                 this.deplace();
                 break;
             case 1:
-                System.out.println("Le loup cherche une cible à attaquer...");
+                System.out.println("Le loup cherche une cible a attaquer...");
 
                 // On utilise une boucle qui vérifie l'attaquabilité des créatures sur la carte
                 attaque :{
@@ -62,7 +62,7 @@ public class Loup extends Monstre implements Combattant{
                         }
                     }
                     // Si l'action n'est jamais interrompue, c'est que personne n'était à portée
-                    System.out.println("Mais personne n'est à portée...");
+                    System.out.println("Mais personne n\'est a portee...");
                 }
                 break;
         }
