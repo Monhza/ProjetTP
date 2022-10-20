@@ -42,31 +42,36 @@ public class Loup extends Monstre implements Combattant{
 
 
     public void joueTour(){
-        // On fait un tirage pour déterminer le comportement du personnage pendant ce tour
-        int choix = tirageAlea.nextInt(5);
 
-        switch (choix) {
-            // Si le tirage tombe sur 0, le personnage se déplace
-            case 0:
-                this.deplace();
-                break;
-            case 1:
-                System.out.println("Le loup cherche une cible a attaquer...");
+        super.joueTour();
 
-                // On utilise une boucle qui vérifie l'attaquabilité des créatures sur la carte
-                attaque :{
-                    for (Creature c : Positions.crea){
-                        // Si une créature est attaquée, l'action est interrompue
-                        if (this.combattre(c)){
-                            break attaque;
-                        }
-                    }
-                    // Si l'action n'est jamais interrompue, c'est que personne n'était à portée
-                    System.out.println("Mais personne n\'est a portee...");
+        // Si le loup est à portée du joueur ou d'un pnj à la fin de son tour, il attaque
+        this.attaqueLoup();
+    }
+
+    public void attaqueLoup(){
+        System.out.println("Le loup cherche une cible a attaquer...");
+
+        // On utilise une boucle qui vérifie l'attaquabilité des créatures sur la carte
+        attaque :{
+
+            // Si le joueur est à proximité, on l'attaque en priorité
+            if (this.combattre(this.monde.player.perso)){
+                break attaque;
+            }
+
+            for (Creature c : Positions.crea){
+                // Si une créature est attaquée, l'action est interrompue
+                if (this.combattre(c)){
+                    break attaque;
                 }
-                break;
+            }
+            // Si l'action n'est jamais interrompue, c'est que personne n'était à portée
+            System.out.println("Mais personne n\'est a portee...");
         }
     }
+
+
     /**
      * Cette methode permet de avoir un combattre soit au corps à corps ou
      * à distance avec l'un des autres creatures dans le monde.

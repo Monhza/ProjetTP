@@ -13,7 +13,6 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
     public int ptPar;
     public int pageAtt;
     public int pagePar;
-    public World monde;
 
     public Random tirageAlea = new Random();
 
@@ -30,14 +29,12 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
      *
      */
     public Creature(World monde, int pV, int dA, int pPar, int paAtt, int paPar, Point2D p) {
-        super(p);
-        this.monde = monde;
+        super(monde, p);
         this.ptVie = pV;
         this.degAtt = dA;
         this.ptPar = pPar;
         this.pageAtt = paAtt;
         this.pagePar = paPar;
-        this.pos = new Point2D(p);
     }
 
     /**
@@ -46,14 +43,13 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
      * @param c : Objet du type Creature qui sera copié
      */
     public Creature(Creature c){
-        super(c.pos);
+        super(c.monde, c.pos);
         this.monde = c.monde;
         this.ptVie = c.ptVie;
         this.degAtt = c.degAtt;
         this.ptPar = c.ptPar;
         this.pageAtt = c.pageAtt;
         this.pagePar = c.pagePar;
-        this.pos = new Point2D(c.pos);
     }
 
     /**

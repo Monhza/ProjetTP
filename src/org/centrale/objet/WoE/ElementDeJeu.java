@@ -7,8 +7,10 @@ package org.centrale.objet.WoE;
 public abstract class ElementDeJeu {
     public String tag;
     public Point2D pos;
+    public World monde;
 
-    public ElementDeJeu(Point2D pos) {
+    public ElementDeJeu(World monde, Point2D pos) {
+        this.monde = monde;
         this.pos = pos;
     }
     public ElementDeJeu() {

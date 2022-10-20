@@ -5,11 +5,9 @@ package org.centrale.objet.WoE;
  */
 public abstract class Objet extends ElementDeJeu implements ElementGraphique {
 
-    public World monde;
 
     public Objet(World monde, Point2D p){
-        super(p);
-        this.monde = monde;
+        super(monde, p);
     }
     public Objet() {
         super();
