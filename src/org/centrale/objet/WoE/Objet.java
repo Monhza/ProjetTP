@@ -1,5 +1,8 @@
 package org.centrale.objet.WoE;
 
+/**
+ * Classe mère de tous les objets
+ */
 public abstract class Objet extends ElementDeJeu implements ElementGraphique {
 
     public World monde;
@@ -20,11 +23,17 @@ public abstract class Objet extends ElementDeJeu implements ElementGraphique {
 
     }
 
+    /**
+     * Par défaut, lorsque le joueur passe sur un objet, celui ci disparait de la carte
+     * @param joueur
+     */
     public void interagit(Joueur joueur) {
         this.disparaitCarte();
     }
 
-    // Méthode appelée lorsqu'un objet disparait de la carte
+    /**
+     * Méthode appelée lorsqu'un objet disparait de la carte
+     */
     public void disparaitCarte(){
         this.monde.disparaitreCarte(this);
     }

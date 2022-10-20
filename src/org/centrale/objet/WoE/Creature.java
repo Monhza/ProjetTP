@@ -67,8 +67,10 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
     public abstract void affiche();
 
     /**
-     * Cette méthode permet le déplacement de la créature sur une position parmi
+     * Cette méthode permet le déplacement aléatoire de la créature sur une position parmi
      * une liste de positions établie à l'avance
+     *
+     * C'est le mode de déplacement par défaut des créatures
      *
      */
     public void deplace() {
@@ -81,16 +83,10 @@ public abstract class Creature extends ElementDeJeu implements Deplacable, Eleme
         this.pos.Y = randomPoint[1];
     }
 
-    public boolean deplace(int dX,int dY) {
-        this.pos.X += dX;
-        this.pos.Y += dY;
-
-        return true;
-    }
 
     /**
      * Méthode qui est appelée lorsque c'est à la créature de jouer son tour
-     * Par défault, à chaque tour, la créature se déplace sur une case aléatoirement
+     * Par défaut, à chaque tour, la créature se déplace sur une case aléatoirement (probabilité d'un sur 5)
      */
     public void joueTour(){
 

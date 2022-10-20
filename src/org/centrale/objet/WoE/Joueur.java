@@ -5,8 +5,6 @@ import java.util.*;
 
 import  org.centrale.objet.Interface.*;
 
-import javax.print.attribute.standard.NumberOfInterveningJobs;
-
 /**
  * Classe permettant de gérer un joueur humain qui pourra effectuer des actions pendant son tour
  */
@@ -32,9 +30,13 @@ public class Joueur implements ElementGraphique, Combattant{
 
         inventaire = new HashMap<>();
 
+        // On liste les classes possibles par le joueur
         String[] typesPossibles = {"Archer", "Guerrier"};
+
+        // On appelle la méthode qui permet au joueur de choisir le personnage
         this.choixPerso(typesPossibles);
 
+        // Une fois le personnage choisi, on l'initialise
         switch (this.typePerso){
             case "Guerrier" :
                 this.perso = new Guerrier(this.monde, this.nomPerso, 100, 90, 50,
@@ -53,9 +55,13 @@ public class Joueur implements ElementGraphique, Combattant{
         Positions.posCrea.add(this.pos);
 
         // On lie ce joueur au panneau qui affiche les statistiques
+        // cela nous permet d'afficher certaines caractéristiques du personnage
         this.monde.fenetreJeu.setStats(this);
     }
 
+    /**
+     * Classe appelée au tour du joueur
+     */
     public void joueTour(){
         String[] descriptionAction;
 
@@ -70,16 +76,19 @@ public class Joueur implements ElementGraphique, Combattant{
         // On va créer une boucle qui tournera tant que le joueur n'aura pas effectué une action
         boolean actionEffectuee = false;
         while (!actionEffectuee) {
+
+            // On est à l'écoute de l'entrée d'un ordre donné grâce aux touches présentes sur l'interface
             if (this.touchesAction.isActionEffectuee()){
+                // On récupère la commande
                 descriptionAction = this.touchesAction.getDescriptionAction();
 
+                // La commande est vérifiée et exécutée si valide
                 actionEffectuee = this.verifieAction(descriptionAction);
-
             }
 
             // On met un sleep, sinon rien ne marche
             try {
-                Thread.sleep(30);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -89,10 +98,14 @@ public class Joueur implements ElementGraphique, Combattant{
         this.ramasserItem();
     }
 
+    /**
+     * Méthode appelée à l'initialisation du personnage pour afficher un panneau de sélection au joueur
+     * @param types
+     */
     public void choixPerso(String[] types){
-        ConfigurateurPerso test = new ConfigurateurPerso(types);
+        ConfigurateurPerso fenetreConfig = new ConfigurateurPerso(types);
 
-        while (!test.isOver()){
+        while (!fenetreConfig.isOver()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -100,10 +113,11 @@ public class Joueur implements ElementGraphique, Combattant{
             }
         }
 
-        this.nomPerso = test.getNom();
-        this.typePerso = test.getTypePerso();
+        this.nomPerso = fenetreConfig.getNom();
+        this.typePerso = fenetreConfig.getTypePerso();
 
-        test.closeWin();
+        // On ferme la fenêtre après la décision
+        fenetreConfig.closeWin();
     }
 
 
@@ -114,7 +128,7 @@ public class Joueur implements ElementGraphique, Combattant{
     public boolean verifieAction(String[] descriptionAction){
 
         if (descriptionAction.length < 1){
-            throw new InvalidParameterException("La description des action année par le panel touche n'est pas valide");
+            throw new InvalidParameterException("La description des action année par le panel touche n'est pas conforme");
         }
 
         switch (descriptionAction[0]){
@@ -139,6 +153,7 @@ public class Joueur implements ElementGraphique, Combattant{
                 int Xcible = Integer.parseInt(cible[0]);
                 int Ycible = Integer.parseInt(cible[1]);
 
+                // On trouve quelle créature est présente sur la carte
                 Creature crea = Positions.whatCreature(Xcible, Ycible);
 
                 if (crea != null){
@@ -201,6 +216,7 @@ public class Joueur implements ElementGraphique, Combattant{
         }
     }
 
+    // Si le personnage combat, on appelle la méthode associée à la classe de son personnage
     @Override
     public boolean combattre(Creature c) {
         return this.perso.combattre(c);
@@ -257,6 +273,12 @@ public class Joueur implements ElementGraphique, Combattant{
         this.inventaireEcran.supprimerElement(tag);
     }
 
+    /**
+     * Classe appelée lorsque le joueur veut utiliser un élément dans l'inventaire
+     * On l'appelle grâce à son tag, le tag est donné par la fenêtre de jeu
+     * @param tag
+     * @return
+     */
     public boolean utiliserDepuisInventaire(String tag){
 
         if (tag == null){

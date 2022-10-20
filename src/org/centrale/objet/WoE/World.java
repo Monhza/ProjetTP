@@ -25,7 +25,6 @@ public class World {
     public List<Objet> items;
     public Joueur player;
 
-    public Carte cartejeu;
     public FenetreJeu fenetreJeu;
     public PanelJeu affichageJeu;
 
@@ -60,7 +59,7 @@ public class World {
         this.genererPop(nbArc, nbPay, nbLap, nbGue, nbLou, nbItem);
 
         // On génère la carte avec tous les personnages dessus
-        this.cartejeu = new Carte(this, this.fenetreJeu);
+        this.fenetreJeu.chargerElements(this);
     }
 
 

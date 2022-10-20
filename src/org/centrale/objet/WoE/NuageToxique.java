@@ -3,6 +3,10 @@ package org.centrale.objet.WoE;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe nuage toxique
+ * Ce nuage se déplace sur la carte et fait perdre des points au joueur qui passe dessus
+ */
 public class NuageToxique extends Objet implements Deplacable, Combattant{
     public int ptDeg;
 
@@ -13,6 +17,9 @@ public class NuageToxique extends Objet implements Deplacable, Combattant{
         this.ptDeg = ptDeg;
     }
 
+    /**
+     * Le nuage se déplace aléatoirement sur la carte
+     */
     public void deplace(){
         Random rand = new Random();
 
@@ -25,6 +32,11 @@ public class NuageToxique extends Objet implements Deplacable, Combattant{
         this.pos.setY(randomElement[1]);
     }
 
+    /**
+     * Méthode "combattre" du nuage, appelée lorsque le joueur passe sur le nuage
+     * @param c
+     * @return
+     */
     public boolean combattre(Creature c){
         if(this.pos.getX() == c.pos.getX() && this.pos.getY() == c.pos.getY()){
             c.ptVie -= this.ptDeg;
@@ -41,6 +53,10 @@ public class NuageToxique extends Objet implements Deplacable, Combattant{
         this.deplace();
     }
 
+    /**
+     * Interaction du joueur avec le nuage
+     * @param joueur
+     */
     @Override
     public void interagit(Joueur joueur){
         // Invoquer le super permet de faire disparaitre l'élément de la carte (pas du jeu)

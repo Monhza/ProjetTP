@@ -2,27 +2,24 @@ package org.centrale.objet.Interface;
 
 import org.centrale.objet.WoE.Archer;
 import org.centrale.objet.WoE.Joueur;
-import org.centrale.objet.WoE.Point2D;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class PanelStat extends JPanel implements Runnable {
+/**
+ * Panneau qui permet d'afficher les statistiques d'un joueur
+ */
+public class PanelStat extends AffichageGraphique implements Runnable {
 
     public int PANEL_WIDTH = 150;
     public int PANEL_HEIGHT = 150;
 
-
-    protected Thread refreshThread;
     protected long tempsRefresh;
-    protected boolean refreshOn;
 
-    public HashMap<String, File> imagesDisponibles;
     public HashMap<String, BufferedImage> imageElements;
 
     public boolean fleches = true;
@@ -34,6 +31,10 @@ public class PanelStat extends JPanel implements Runnable {
     private JLabel labelFleches;
     private JPanel mainPanel;
 
+    /**
+     * Constructeur auquel lon précise la période de rafraichissement de l'affichage
+     * @param tempsRefresh
+     */
     public PanelStat(long tempsRefresh) {
         this.add(mainPanel);
         this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
@@ -50,34 +51,8 @@ public class PanelStat extends JPanel implements Runnable {
         labelFleches.setText("Fleches");
 
         // On charge les chemins des images présents dans le fichier "graphismes"
-        this.chargerCheminsImages();
+        this.chargerCheminsImages("\\graphismes_statistiques");
     }
-
-
-    /**
-     * Cette méthode permet de charger le chemin de toutes les images présentes dans le fichier graphismes
-     */
-    protected void chargerCheminsImages(){
-
-        imagesDisponibles = new HashMap<String, File>();
-
-        String filePath = new File("").getAbsolutePath();
-        filePath += "\\graphismes_statistiques";
-        File ImageFile = new File(filePath);
-
-        String[] pathnames = ImageFile.list();
-
-        String name;
-        String finalPath;
-        for (String pathname : pathnames) {
-
-            name = pathname.split("[.]")[0];
-            finalPath = filePath + "\\" + pathname;
-
-            imagesDisponibles.put(name, new File(finalPath));
-        }
-    }
-
 
     /**
      * Cette classe permet de charger les éléments à utiliser dans le panneau de statistiques
@@ -98,6 +73,18 @@ public class PanelStat extends JPanel implements Runnable {
         }
 
         imageElements.put(nomImage, imageChargee);
+    }
+
+    /**
+     * Méthode qui décrit ce qu'il se passe pendant le run de l'instance
+     */
+    public void pendantRun(){
+        labelVie.setText(String.valueOf(player.perso.ptVie));
+        labelDegats.setText(String.valueOf(player.perso.degAtt));
+
+        if (fleches){
+            labelFleches.setText(String.valueOf(((Archer) player.perso).nbFleches));
+        }
     }
 
     /**
@@ -159,41 +146,6 @@ public class PanelStat extends JPanel implements Runnable {
         }
 
         this.demarrerAffichage();
-    }
-
-    /**
-     * Cette méthode permet de démarrer l'affichage dynamique des statistiques via un Thread
-     */
-    public void demarrerAffichage(){
-        refreshOn = true;
-        this.refreshThread = new Thread(this);
-        this.refreshThread.setDaemon(true);
-        this.refreshThread.start();
-    }
-
-    /**
-     * Permet l'affichage dynamique de la carte
-     */
-    @Override
-    public void run() {
-
-        int i = 0;
-
-        while (this.refreshOn) {
-            try {
-                Thread.sleep(this.tempsRefresh);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            labelVie.setText(String.valueOf(player.perso.ptVie));
-            labelDegats.setText(String.valueOf(player.perso.degAtt));
-
-            if (fleches){
-                labelFleches.setText(String.valueOf(((Archer) player.perso).nbFleches));
-            }
-
-        }
     }
 
 

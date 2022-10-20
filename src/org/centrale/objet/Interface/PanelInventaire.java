@@ -8,12 +8,16 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-
-public class PanelInventaire extends JPanel implements MouseListener, Runnable{
+/**
+ * Panel qui affiche l'inventaire, ce panel est lié à un joueur
+ */
+public class PanelInventaire extends AffichageGraphique implements MouseListener{
 
     public final int PANEL_WIDTH = 200;
     public final int PANEL_HEIGHT = 150;
@@ -30,18 +34,18 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
     protected int sideLengthX, sideLengthY;
     protected int selectionX,selectionY;
 
-    protected Thread refreshThread;
-    protected long tempsRefresh;
-    protected boolean refreshOn;
 
 
-    public HashMap<String, File> imagesDisponibles;
 
-    //Ces hashmaps vont servir à stoquer les données des éléments sur la carte
+
+    //Ces hashmaps vont servir à stocker les données des éléments présents dans l'inventaire
     public HashMap<String, BufferedImage> imageElements;
     public HashMap<String, Point2D> positionElements;
 
-
+    /**
+     * Constructeur du Panel
+     * @param tempsRefresh : intervalle de rafraichissement de l'interface graphique
+     */
     public PanelInventaire(long tempsRefresh){
         super();
 
@@ -53,67 +57,15 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
         this.setBackground(this.BACKGROUND_COLOR);
 
         // On crée une nouvelle Hashmap pour donner tous les éléments présents sur la carte
-        imageElements = new HashMap<String, BufferedImage>();
-        positionElements = new HashMap<String, Point2D>();
+        imageElements = new HashMap<>();
+        positionElements = new HashMap<>();
 
         // On charge les chemins des images présents dans le fichier "graphismes"
-        this.chargerCheminsImages();
+        this.chargerCheminsImages("\\graphismes");
 
         // On détecte les mouvements et des clics de la souris sur le panel pour permettre de
         // sélectionner une case
         addMouseListener(this);
-    }
-
-    /**
-     * Cette méthode permet de charger le chemin de toutes les images présentes dans le fichier graphismes
-     */
-    protected void chargerCheminsImages(){
-
-        imagesDisponibles = new HashMap<String, File>();
-
-        String filePath = new File("").getAbsolutePath();
-        filePath += "\\graphismes";
-        File ImageFile = new File(filePath);
-
-        String[] pathnames = ImageFile.list();
-
-        String name;
-        String finalPath;
-        for (String pathname : pathnames) {
-
-            name = pathname.split("[.]")[0];
-            finalPath = filePath + "\\" + pathname;
-
-            imagesDisponibles.put(name, new File(finalPath));
-        }
-
-    }
-
-    /**
-     * Cette méthode permet de démarrer l'affichage dynamique du jeu via un Thread
-     */
-    public void demarrerAffichage(){
-        refreshOn = true;
-        this.refreshThread = new Thread(this);
-        this.refreshThread.setDaemon(true);
-        this.refreshThread.start();
-    }
-
-    /**
-     * Permet l'affichage dynamique de la carte
-     */
-    @Override
-    public void run() {
-
-        while (this.refreshOn) {
-            try {
-                Thread.sleep(this.tempsRefresh);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            this.refresh();
-        }
     }
 
     /**
@@ -146,17 +98,9 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
 
     }
 
-    /**
-     * Méthode appelée lors du jeu
-     */
-    public void refresh(){
-        this.repaint();
-    }
-
 
     /**
-     * Cette classe permet de charger un nouvel élément sur la carte
-     * Ce peut être un joueur, un item au tout autre chose utile à notre interface visuelle
+     * Cette classe permet de charger un nouvel élément sur l'inventaire
      */
     public void chargerElement(String nomImage, String tag) {
 
@@ -174,11 +118,13 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
         }
 
         imageElements.put(tag, imageChargee);
+        // Pour la position de l'élément de l'inventaire, on invoque la méthode allouer position de la classe
+        // qui nous retourne une position vide de l'inventaire visuel
         positionElements.put(tag, this.allouerPosition());
     }
 
     /**
-     * Méthode qui permet de supprimer un élément présent sur la carte
+     * Méthode qui permet de supprimer un élément présent sur l'inventaire
      * Cette suppression se fait via son tag
      */
     public void supprimerElement(String tag){
@@ -188,7 +134,7 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
 
     /**
      * Cette classe nous permet de convertir la position d'un élément en coordonnées exploitables pour notre
-     * interface graphique
+     * interface graphique. Méthode utile pour "dessiner" les éléments sur l'inventaire
      * @param tag : tag de l'élément considéré
      * @return : {x, y, width, height}
      */
@@ -199,10 +145,18 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
         BufferedImage imageTemp = imageElements.get(tag);
         Point2D pointTemp = positionElements.get(tag);
 
+        // De temps en temps, à cause du Threading, un élément est supprimé pendant l'exécution
+        // de la méthode. On vérifie ce phénomène ici
+        if (imageTemp == null){
+            return null;
+        }
+
         double heightImage = imageTemp.getHeight();
         double widthImage = imageTemp.getWidth();
         double facteur = 0;
 
+        // On définit le format de l'image
+        // On fait rentrer l'image dans une case, sans pour autant en changer les proportions
         if (heightImage > widthImage){
             height = this.sideLengthY - 1;
             y = pointTemp.getY() * this.sideLengthY + 1;
@@ -237,8 +191,7 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
         Graphics2D g2D = (Graphics2D) g;
 
 
-        // On place sur la carte tous les nouveaux éléments et on bouge tous les éléments qui ont
-        // subi une translation
+        // On recharge tous les éléments sur la carte
         int[] coordonnees;
         String[] listeTags = this.positionElements.keySet().toArray(new String[0]);
         BufferedImage imageDraw;
@@ -246,9 +199,15 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
             coordonnees = this.donnerCoordonnerElement(tag);
             imageDraw = imageElements.get(tag);
 
-            g2D.drawImage(imageDraw, coordonnees[0], coordonnees[1], coordonnees[2], coordonnees[3], null);
+            // De temps en temps, à cause du Threading, un élément est supprimé pendant l'exécution
+            // de la méthode. On vérifie ce phénomène ici
+            if (imageDraw != null) {
+                g2D.drawImage(imageDraw, coordonnees[0], coordonnees[1], coordonnees[2], coordonnees[3], null);
+            }
         }
 
+        // Cette méthode place le curseur de sélection sur l'inventaire
+        // Le curseur est affiché en permanence
         this.placerSelection(g2D);
     }
 
@@ -339,22 +298,18 @@ public class PanelInventaire extends JPanel implements MouseListener, Runnable{
 
 
     /**
-     * Revoie la matrice de présence des items dans l'inventaire
+     * Renvoie la matrice de présence des items dans l'inventaire
      * @return
      */
     protected boolean[][] presenceItem(){
 
-        Point2D pointTemp;
-
         boolean[][] matPresence = new boolean[this.invWidth][this.invHeight];
 
-        String[] listeTags = this.positionElements.keySet().toArray(new String[0]);
+        List<Point2D> listePoints = new ArrayList<Point2D>(this.positionElements.values());
 
-        for (String tag : listeTags){
+        for (Point2D point : listePoints){
 
-            pointTemp = this.positionElements.get(tag);
-
-            matPresence[pointTemp.getX()][pointTemp.getY()] = true;
+            matPresence[point.getX()][point.getY()] = true;
         }
 
         return matPresence;

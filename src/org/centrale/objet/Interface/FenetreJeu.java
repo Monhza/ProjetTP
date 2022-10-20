@@ -3,8 +3,12 @@ package org.centrale.objet.Interface;
 import org.centrale.objet.WoE.*;
 
 import javax.swing.*;
-import java.awt.*;
 
+/**
+ * Classe fenêtre de jeu
+ *
+ * comporte tous les panels qui composent notre interface
+ */
 public class FenetreJeu extends JFrame {
 
     private PanelJeu affichageJeu;

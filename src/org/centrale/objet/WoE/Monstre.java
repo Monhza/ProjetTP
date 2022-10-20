@@ -1,12 +1,9 @@
 package org.centrale.objet.WoE;
-import java.util.Random;
 
 /**
  * Classe de gestion d'un monstre
  * chaque instance correspond à un monstre qui a des caractéristiques propres
  * tels que les points de vie, la position...
- * @author Nicolas Thevenot
- * @version 1.0
  */
 public abstract class Monstre extends Creature{
 
@@ -74,10 +71,6 @@ public abstract class Monstre extends Creature{
 
         System.out.println("\nLes coordonnees du monstre sont :");
         pos.affiche();
-    }
-
-    public void joueTour(){
-        super.joueTour();
     }
 
 }

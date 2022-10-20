@@ -17,7 +17,6 @@ public class Point2D {
 
     static double epsilon =  pow(10, -3);
 
-    //Constructeurs
     /**
      * Constructeur sans paramètres
      */

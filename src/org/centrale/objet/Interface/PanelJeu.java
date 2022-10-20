@@ -13,7 +13,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
-public class PanelJeu extends JPanel implements MouseListener, Runnable{
+/**
+ * Panel qui permet l'affichage de la carte du jeu de WoE
+ */
+public class PanelJeu extends AffichageGraphique implements MouseListener{
 
     public int PANEL_WIDTH = 600;
     public int PANEL_HEIGHT = 600;
@@ -30,18 +33,21 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
 
     protected int selectionX,selectionY;
 
-    protected Thread refreshThread;
     protected long tempsRefresh;
-    protected boolean refreshOn;
 
 
-    public HashMap<String, File> imagesDisponibles;
-
-    //Ces hashmaps vont servir à stoquer les données des éléments sur la carte
+    //Ces hashmaps vont servir à stocker les données des éléments sur la carte
     public HashMap<String, BufferedImage> imageElements;
     public HashMap<String, Point2D> positionElements;
 
 
+    /**
+     * Constructeur de la classe, auquel on précise les dimensions de la carte en terme de cases
+     * (et non pas en pixels pour l'affichage)
+     * @param mapWidth
+     * @param mapHeight
+     * @param tempsRefresh : Période de rafraichissement de la carte
+     */
     public PanelJeu(int mapWidth, int mapHeight, long tempsRefresh){
         super();
 
@@ -61,63 +67,14 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
         positionElements = new HashMap<String, Point2D>();
 
         // On charge les chemins des images présents dans le fichier "graphismes"
-        this.chargerCheminsImages();
+        this.chargerCheminsImages("\\graphismes");
 
         // On détecte les mouvements et des clics de la souris sur le panel pour permettre de
         // sélectionner une case
         addMouseListener(this);
     }
 
-    /**
-     * Cette méthode permet de charger le chemin de toutes les images présentes dans le fichier graphismes
-     */
-    protected void chargerCheminsImages(){
 
-        imagesDisponibles = new HashMap<String, File>();
-
-        String filePath = new File("").getAbsolutePath();
-        filePath += "\\graphismes";
-        File ImageFile = new File(filePath);
-
-        String[] pathnames = ImageFile.list();
-
-        String name;
-        String finalPath;
-        for (String pathname : pathnames) {
-
-            name = pathname.split("[.]")[0];
-            finalPath = filePath + "\\" + pathname;
-
-            imagesDisponibles.put(name, new File(finalPath));
-        }
-    }
-
-    /**
-     * Cette méthode permet de démarrer l'affichage dynamique du jeu via un Thread
-     */
-    public void demarrerAffichage(){
-        refreshOn = true;
-        this.refreshThread = new Thread(this);
-        this.refreshThread.setDaemon(true);
-        this.refreshThread.start();
-    }
-
-    /**
-     * Permet l'affichage dynamique de la carte
-     */
-    @Override
-    public void run() {
-
-        while (this.refreshOn) {
-            try {
-                Thread.sleep(this.tempsRefresh);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            this.refresh();
-        }
-    }
 
     /**
      * On enregistre la case du dernier click
@@ -149,17 +106,16 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
 
     }
 
-    /**
-     * Méthode appelée lors du jeu
-     */
-    public void refresh(){
-        this.repaint();
-    }
+
 
 
     /**
      * Cette classe permet de charger un nouvel élément sur la carte
      * Ce peut être un joueur, un item au tout autre chose utile à notre interface visuelle
+     *
+     * @param nomImage
+     * @param point
+     * @param tag : identifiant de l'image présente sur la carte
      */
     public void chargerElement(String nomImage, Point2D point, String tag) {
 
@@ -183,6 +139,8 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
     /**
      * Méthode qui permet de supprimer un élément présent sur la carte
      * Cette suppression se fait via son tag
+     *
+     * @param tag : identifiant de l'image présente sur la carte
      */
     public void supprimerElement(String tag){
         imageElements.remove(tag);
@@ -202,30 +160,28 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
         BufferedImage imageTemp = imageElements.get(tag);
         Point2D pointTemp = positionElements.get(tag);
 
+        // De temps en temps, à cause du Threading, un élément est supprimé pendant l'exécution
+        // de la méthode. On vérifie ce phénomène ici
+        if (imageTemp == null){
+            return null;
+        }
+
         double heightImage = imageTemp.getHeight();
         double widthImage = imageTemp.getWidth();
         double facteur = 0;
 
+        // On définit le format de l'image
+        // On fait rentrer l'image dans une case, sans pour autant en changer les proportions
         if (heightImage > widthImage){
             height = this.sideLengthY - 1;
-            try {
             y = pointTemp.getY() * this.sideLengthY + 1;
-            }catch (NullPointerException e){
-                System.out.println("test");
-                y =0;
-            }
 
             facteur = widthImage/heightImage;
             width = this.sideLengthX*facteur - 1;
             x = (pointTemp.getX() + (1-facteur)/2) * this.sideLengthX + 1;
         } else {
             width = this.sideLengthX - 1;
-            try {
-                x = pointTemp.getX() * sideLengthX + 1;
-            }catch (NullPointerException e){
-                System.out.println("test");
-                x =0;
-            }
+            x = pointTemp.getX() * sideLengthX + 1;
 
             facteur = heightImage/widthImage;
             height = this.sideLengthY*facteur - 1;
@@ -253,6 +209,7 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
         coordX = selectionX*sideLengthX;
         coordY = selectionY*sideLengthY;
 
+        // On place un petit carré de couleur pour indiquer la sélection du joueur
         g.drawLine(coordX+2, coordY+2, coordX+sideLengthX-2, coordY+2);
         g.drawLine(coordX+2, coordY+2, coordX+2, coordY+sideLengthY-2);
         g.drawLine(coordX+sideLengthX-2, coordY+2, coordX+sideLengthX-2, coordY+sideLengthY-2);
@@ -281,7 +238,11 @@ public class PanelJeu extends JPanel implements MouseListener, Runnable{
             coordonnees = this.donnerCoordonnerElement(tag);
             imageDraw = imageElements.get(tag);
 
-            g2D.drawImage(imageDraw, coordonnees[0], coordonnees[1], coordonnees[2], coordonnees[3], null);
+            // De temps en temps, à cause du Threading, un élément est supprimé pendant l'exécution
+            // de la méthode. On vérifie ce phénomène ici
+            if (imageDraw != null) {
+                g2D.drawImage(imageDraw, coordonnees[0], coordonnees[1], coordonnees[2], coordonnees[3], null);
+            }
         }
 
         this.placerSelection(g2D);

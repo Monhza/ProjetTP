@@ -94,9 +94,7 @@ public abstract class Personnage extends Creature{
         pos.affiche();
     }
 
-    public void joueTour(){
-        super.joueTour();
-    }
+
 
     public boolean combattre(Creature c){
         return false;

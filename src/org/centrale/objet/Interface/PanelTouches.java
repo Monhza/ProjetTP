@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Panel qui affiche les possibilités d'action d'un joueur
+ */
 public class PanelTouches extends JPanel implements ActionListener {
 
     public int PANEL_WIDTH = 200;
@@ -35,6 +38,10 @@ public class PanelTouches extends JPanel implements ActionListener {
         utiliserButton.addActionListener(this);
     }
 
+    /**
+     * Méthode qui indique les commandes envoyées au jeu lors de l'appui sur une touche particulière
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         // On efface la dernière action s'il y en a eu une
@@ -76,6 +83,11 @@ public class PanelTouches extends JPanel implements ActionListener {
         return false;
     }
 
+    /**
+     * Méthode qui permet au jeu de demander quelle a été la dernière commande entrée par le joueur
+     * Une fois la commande récupérée, le panel réinitialise la commande
+     * @return
+     */
     public String[] getDescriptionAction(){
         String[] actionTemp = this.descriptionAction.clone();
 
@@ -86,6 +98,10 @@ public class PanelTouches extends JPanel implements ActionListener {
 
     }
 
+    /**
+     * Permet d'initialiser la commande
+     * Permet de gérer plus ergonomiquement le jeu du point de vue du joueur
+     */
     public void initialiseAction(){
         this.actionEffectuee = false;
         this.descriptionAction = null;

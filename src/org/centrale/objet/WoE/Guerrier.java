@@ -8,7 +8,6 @@ public class Guerrier extends Personnage implements Combattant {
 
     public String idGraphique = "guerrier";
 
-    //Constructeurs
     /**
      * Constructeur avec paramètres
      *
@@ -46,9 +45,9 @@ public class Guerrier extends Personnage implements Combattant {
         super();
     }
 
-    //Methodes
+
     /**
-     * Cette methode permet de avoir un combattre soit au corps à corps ou
+     * Cette methode permet d'avoir un combat soit au corps à corps ou
      * à distance avec l'un des autres creatures dans le monde.
      *
      * Renvoie true si l'attaque est possible, false sinon
@@ -66,19 +65,19 @@ public class Guerrier extends Personnage implements Combattant {
             Rand = tirageAlea.nextInt(100) + 1;
 
             if(Rand>this.pageAtt){
-                System.out.println("Attaque ratée");
+                System.out.println("Attaque ratee");
                 degats = 0;
             }
             else{
                 Rand = tirageAlea.nextInt(100)+1;
-                System.out.println("Attaque réussie");
+                System.out.println("Attaque reussie");
 
                 if(Rand>c.pagePar){
-                    System.out.println("Dégâts maximaux");
+                    System.out.println("Degats maximaux");
                     degats = -this.degAtt;
                 }
                 else{
-                    System.out.println("Dégâts atténués");
+                    System.out.println("Degats attenues");
 
                     degats = -this.degAtt+c.ptPar;
                 }
@@ -99,6 +98,4 @@ public class Guerrier extends Personnage implements Combattant {
     public String getImage() {
         return this.idGraphique;
     }
-
-
 }

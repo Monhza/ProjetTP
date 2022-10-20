@@ -7,6 +7,8 @@ import java.util.Random;
 
 /**
  * Cette classe regroupe des méthodes statiques utiles dans notre programme
+ *
+ * Elle ne devrait pas exister sous cette forme, cette classe sera refondue dans une version future (ou pas)
  */
 public class Positions {
 
@@ -16,6 +18,7 @@ public class Positions {
 
     public static List<Creature> crea = new LinkedList<>();
     public static List<Objet> item = new LinkedList<>();
+
 
     /**
      * Méthode qui donne les cases non occupées autour d'une case

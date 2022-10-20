@@ -1,7 +1,9 @@
 package org.centrale.objet.WoE;
 
 /**
+ * Classe nourriture
  *
+ * Modifie les statistiques du joueur quand consommé
  */
 public class Nourriture extends Objet {
 
@@ -20,21 +22,16 @@ public class Nourriture extends Objet {
         this.modPagePar = paPar;
     }
 
-    public void mangerNourriture(Creature c){
-
-        if(this.pos.equals(c.pos)){
-            c.degAtt += this.modDegAtt;
-            c.ptPar += this.modPtPar;
-            c.pageAtt += this.modPageAtt;
-            c.pagePar += this.modPagePar;
-        }
-    }
 
     public String getImage() {
         return this.idGraphique;
     }
 
 
+    /**
+     * Appelée lorsqu'un joueur consomme la nourriture
+     * @param joueur
+     */
     public void utiliser(Joueur joueur){
         super.utiliser(joueur);
         joueur.modifierDegAtt(this.modDegAtt);
@@ -43,6 +40,10 @@ public class Nourriture extends Objet {
         joueur.modifierPagePar(this.modPagePar);
     }
 
+    /**
+     * Appelé lorsque le joueur marche sur la nourriture
+     * @param joueur
+     */
     @Override
     public void interagit(Joueur joueur){
         // Invoquer le super permet de faire disparaitre l'élément de la carte (pas du jeu)
@@ -50,5 +51,4 @@ public class Nourriture extends Objet {
 
         joueur.ajoutInventaire(this);
     }
-
 }

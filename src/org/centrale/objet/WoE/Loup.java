@@ -58,19 +58,19 @@ public class Loup extends Monstre implements Combattant{
             Rand = tirageAlea.nextInt(100) + 1;
 
             if(Rand>this.pageAtt){
-                System.out.println("Attaque ratée");
+                System.out.println("Attaque ratee");
                 degats = 0;
             }
             else{
                 Rand = tirageAlea.nextInt(100)+1;
-                System.out.println("Attaque réussie");
+                System.out.println("Attaque reussie");
 
                 if(Rand>c.pagePar){
-                    System.out.println("Dégâts maximaux");
+                    System.out.println("Degats maximaux");
                     degats = -this.degAtt;
                 }
                 else{
-                    System.out.println("Dégâts atténués");
+                    System.out.println("Degats attenues");
 
                     degats = -this.degAtt+c.ptPar;
                 }
@@ -81,7 +81,7 @@ public class Loup extends Monstre implements Combattant{
 
         // On vérifie qu'on ne "soigne" pas l'ennemi en l'attaquant en cas de parade importante
         if (degats >= 0){
-            System.out.println("Le personnage ne subit aucun dégats");
+            System.out.println("Le personnage ne subit aucun degats");
             degats = 0;
         }
         // On modifie les PV de la créature attaquée
@@ -93,6 +93,4 @@ public class Loup extends Monstre implements Combattant{
     public String getImage() {
         return this.idGraphique;
     }
-
-
 }

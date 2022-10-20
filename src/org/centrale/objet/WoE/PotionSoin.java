@@ -35,25 +35,6 @@ public class PotionSoin extends Objet{
         return pos;
     }
 
-    //Methodes
-
-    /**
-     * Méthode qui permet d'utiliser une potion pour une creature
-     * @param c : Creature qui recevra les points de vie
-     */
-    public void boire_potion(Creature c){
-        if (this.quantite >= 1 && this.pos.equals(c.pos)){
-            this.quantite -= 1;
-
-            c.ptVie += this.soin;
-
-            System.out.println("La potion rend " + this.soin + " points de vie");
-        }
-        else{
-            System.out.println("La potion est vide");
-        }
-    }
-
     public String getImage() {
         return this.idGraphique;
     }
@@ -68,6 +49,10 @@ public class PotionSoin extends Objet{
         joueur.modifierPV(this.soin);
     }
 
+    /**
+     * Méthode appelée lorsque le joueur passe sur le point de la carte associé à l'objet
+     * @param joueur
+     */
     @Override
     public void interagit(Joueur joueur){
         // Invoquer le super permet de faire disparaitre l'élément de la carte (pas du jeu)
@@ -75,6 +60,4 @@ public class PotionSoin extends Objet{
 
         joueur.ajoutInventaire(this);
     }
-
-
 }
